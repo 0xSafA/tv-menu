@@ -3,7 +3,7 @@ import { google } from 'googleapis';
 import fs from 'fs';
 import path from 'path';
 
-const privateKey = fs.readFileSync(path.resolve(__dirname, '../service-key.pem'), 'utf-8');
+const privateKey = fs.readFileSync(path.resolve(process.cwd(), 'service-key.pem'), 'utf-8');
 
 const auth = new google.auth.JWT(
   process.env.GS_CLIENT_EMAIL!,
