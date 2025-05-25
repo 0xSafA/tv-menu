@@ -1,5 +1,16 @@
 // shop/lib/google.ts
 import { google } from 'googleapis';
+import fs from 'fs';
+import path from 'path';
+
+const privateKey = fs.readFileSync(path.resolve(__dirname, '../service-key.pem'), 'utf-8');
+
+const auth = new google.auth.JWT(
+  process.env.GS_CLIENT_EMAIL!,
+  undefined,
+  privateKey,
+  ['https://www.googleapis.com/auth/spreadsheets.readonly']
+);
 
 export interface MenuRow {
   Category: string;
@@ -13,13 +24,6 @@ export interface MenuRow {
   Tag?: string;
   Our?: string;
 }
-
-const auth = new google.auth.JWT(
-  process.env.GS_CLIENT_EMAIL,
-  undefined,
-  process.env.GS_PRIVATE_KEY!.replace(/\\n/g, '\n'),
-  ['https://www.googleapis.com/auth/spreadsheets.readonly']
-);
 
 const sheets = google.sheets({ version: 'v4', auth });
 
