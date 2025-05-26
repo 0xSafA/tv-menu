@@ -29,7 +29,6 @@
 @layer base {
   html,
   body {
-    /* NB: в Tailwind 4 используем синтаксис с переменными  */
     @apply bg-[--color-bg] text-[--color-text] font-body antialiased;
     max-width: 100vw;
     overflow-x: hidden;
