@@ -1,60 +1,58 @@
-/* === Tailwind подключение === */
+/* ────────────────────  Tailwind layers  ──────────────────── */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* === Brand tokens & темы === */
+/* ─────────────────  Brand-tokens и темы  ─────────────────── */
 :root {
-  /* brand palette */
-  --color-primary:        #536C4A;
-  --color-primary-light:  #6F8C60;
-  --color-primary-dark:   #3B4E38;
-  --color-muted:          #B0B0B0;
+  /* фирменная зелёная палитра OG Lab */
+  --color-primary:        #536C4A;  /* основной зелёный */
+  --color-primary-light:  #B0BF93;  /* светлый зелёный */
+  --color-primary-dark:   #3B4E38;  /* тёмный зелёный */
 
-  /* light theme (default) */
-  --color-bg:   #FFFFFF;
-  --color-text: #171717;
+  /* тёмная (TV) тема по умолчанию */
+  --color-bg:   #0F0F0F;
+  --color-text: #ECECEC;
+  --color-muted:#8A8A8A;
 }
 
-@media (prefers-color-scheme: dark) {
+/* светлая тема — автоматически, если система предпочитает light  */
+@media (prefers-color-scheme: light) {
   :root {
-    --color-bg:   #0A0A0A;
-    --color-text: #EDEDED;
+    --color-bg:   #FFFFFF;
+    --color-text: #171717;
+    --color-muted:#666666;
   }
 }
 
-/* === Base reset (внутри layer — чтобы Tailwind мог переопределяться) === */
+/* ───────────────  Базовый reset + глобальные стили  ───────── */
 @layer base {
   html,
   body {
-    @apply bg-bg text-text font-body antialiased;
+    /* NB: в Tailwind 4 используем синтаксис с переменными  */
+    @apply bg-[--color-bg] text-[--color-text] font-body antialiased;
     max-width: 100vw;
     overflow-x: hidden;
   }
 
-  *,
-  *::before,
-  *::after {
+  *, *::before, *::after {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
   }
 
   a {
-    color: inherit;
     text-decoration: none;
+    @apply text-[--color-primary];
   }
 
-  /* поддержка тёмной темы для браузеров, где это желательно */
+  /* скрываем системный курсор в режиме TV-меню (по желанию) */
+  body.menu-mode {
+    cursor: none;
+  }
+
+  /* для браузеров, которые подхватывают color-scheme */
   @media (prefers-color-scheme: dark) {
-    html {
-      color-scheme: dark;
-    }
+    html { color-scheme: dark; }
   }
-}
-
-/* === Дополнительные утилиты === */
-/* Скрываем системный курсор в режиме TV-меню — по желанию */
-body.menu-mode {
-  cursor: none;
 }
