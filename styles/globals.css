@@ -35,6 +35,10 @@
     overflow-x: hidden;
   }
 
+  table {
+  border-collapse: collapse;
+}
+
   *, *::before, *::after {
     box-sizing: border-box;
     margin: 0;
