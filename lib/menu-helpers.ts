@@ -23,7 +23,7 @@ export const columnsPerCategory: Record<
 /**
  * Определяет раскладку категорий по колонкам для отображения.
  */
-export const layout: string[][] = [
+export const layoutOrder: string[][] = [
   ['TOP SHELF', 'MID SHELF'],
   ['PREMIUM', 'SMALLS', 'CBG', 'PRE ROLLS', 'PIATELLA'],
   ['FRESH FROZEN HASH', 'LIVE HASH ROSIN', 'DRY SIFT HASH', 'ICE BUBBLE HASH'],

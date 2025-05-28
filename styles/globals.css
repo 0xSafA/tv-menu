@@ -1,81 +1,38 @@
-/* ──────────── Tailwind layers ──────────── */
+/* styles/globals.css */
+
+/* ───────── Tailwind layers ───────── */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* ─────── Brand-tokens (CSS-переменные) ─────── */
+/* ───────── Brand tokens ───────── */
 :root {
-  /* фирменная зелёная палитра OG Lab */
   --color-primary: #536C4A;
-  /* основной зелёный */
   --color-primary-light: #B0BF93;
-  /* светлый зелёный */
   --color-primary-dark: #3B4E38;
-  /* тёмный зелёный */
-
-  /* тёмная (TV) тема по умолчанию */
-  --color-bg: #0F0F0F;
-  --color-text: #ECECEC;
-  --color-muted: #8A8A8A;
 }
 
-/* светлая тема — если система предпочитает light */
-@media (prefers-color-scheme: light) {
-  :root {
-    --color-bg: #FFFFFF;
-    --color-text: #171717;
-    --color-muted: #666666;
-  }
-}
-
-/* ───────────── Base layer ───────────── */
+/* ───────── Base layer ───────── */
 @layer base {
 
   html,
   body {
-    @apply antialiased bg-[var(--color-bg)] text-[var(--color-text)];
-    max-width: 100vw;
-    overflow-x: hidden;
+    @apply antialiased bg-white text-[#111] overflow-x-hidden;
     font-family: var(--font-inter, Inter, sans-serif);
   }
 
-  table {
-    @apply border-collapse;
-  }
-
-  *,
-  *::before,
-  *::after {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-  }
-
   a {
-    @apply text-[var(--color-primary)] no-underline;
-  }
-
-  /* скрываем курсор в режиме TV-меню */
-  body.menu-mode {
-    cursor: none;
-  }
-
-  /* подсказываем браузеру обе цветовые схемы */
-  html {
-    color-scheme: light dark;
+    @apply text-[var(--color-primary)];
   }
 }
 
-/* ───────────── Components layer ───────────── */
+/* ───────── Components layer ───────── */
 @layer components {
-
-  /* зелёная плашка-заголовок секции */
   .menu-section-title {
-    @apply bg-brand-dark text-white font-semibold tracking-wide px-3 py-1 uppercase rounded-sm;
+    @apply bg-[var(--color-primary)] text-white px-3 py-1 uppercase font-semibold tracking-wide text-sm rounded-sm;
   }
 
-  /* маленький цветной кружок-индикатор */
   .dot {
-    @apply inline-block w-2 h-2 rounded-full mr-2 align-middle;
+    @apply inline-block w-[8px] h-[8px] rounded-full mr-[6px] align-middle;
   }
 }
