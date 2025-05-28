@@ -136,7 +136,7 @@ function CategoryBlock({ name, rows }: { name: string; rows: MenuRow[] }) {
                       style={{ backgroundColor: typeColor[typeKey] }}
                     />
                   )}
-                  {r.Tag === 'our' && (
+                  {r.Our && (
                     <Image
                       src='/icons/leaf.svg'
                       alt=''
