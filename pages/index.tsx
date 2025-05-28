@@ -10,15 +10,14 @@ type HomeProps = {
 const Home: NextPage<HomeProps> = ({ rows }) => (
   <>
     <Head>
-      <title>OG Lab | TV Menu</title>
+      <title>OG Lab Menu</title>
       <meta
         name="description"
-        content="Актуальное телевизионное меню OG Lab: свежие сорта, цены и предложения"
+        content="OG Lab Menu"
       />
       <link rel="icon" href="/favicon.ico" />
     </Head>
 
-    {/* Используем тот же компонент, что и на /menu */}
     <MenuPage rows={rows} />
   </>
 );
@@ -27,7 +26,7 @@ export const getStaticProps: GetStaticProps<HomeProps> = async () => {
   const rows = await fetchMenu(); // получаем данные из Google Sheets
   return {
     props: { rows },
-    revalidate: 900, // пересобирать каждые 15 минут
+    revalidate: 60, 
   };
 };
 

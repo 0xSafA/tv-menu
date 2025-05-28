@@ -59,7 +59,7 @@ const MenuPage: NextPage<MenuProps> = ({ rows }) => {
                       className='grid grid-cols-[auto_3.25rem_3.25rem_3.25rem] gap-1 py-0.5 whitespace-nowrap'
                     >
                       <span className='flex items-center gap-1'>
-                        <span className={bullet(item.Type)} />
+                        <span className={bullet(item.Type ?? '')} />
                         {item.Our && (
                           <Image
                             src='/leaf.svg'
