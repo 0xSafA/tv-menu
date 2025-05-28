@@ -1,4 +1,3 @@
-// shop/lib/google.ts
 import { google } from 'googleapis';
 import fs from 'fs';
 import path from 'path';
@@ -31,14 +30,8 @@ export interface MenuRow {
   Our?: boolean;
 }
 
-/** Преобразует строковое значение из таблицы в число */
-function parseNumber(value: any): number | undefined {
-  const n = parseFloat(value);
-  return isNaN(n) ? undefined : n;
-}
-
 /** Преобразует строку TRUE/FALSE в boolean */
-function parseBoolean(value: any): boolean | undefined {
+function parseBoolean(value: unknown): boolean | undefined {
   if (value === 'TRUE' || value === true) return true;
   if (value === 'FALSE' || value === false) return false;
   return undefined;
@@ -51,31 +44,27 @@ export async function fetchMenu(): Promise<MenuRow[]> {
     valueRenderOption: 'UNFORMATTED_VALUE',
   });
 
-  const [header, ...rows] = data.values as any[][];
+  const values = data.values;
+  if (!values || !Array.isArray(values)) return [];
+
+  const [header, ...rows] = values as [string[], ...string[][]];
 
   return rows
-    .map((r) =>
-      header.reduce<MenuRow>((acc, key, i) => {
+    .map((r) => {
+      const item: Partial<MenuRow> = {};
+
+      header.forEach((key, i) => {
         const value = r[i];
 
-        switch (key) {
-          case 'THC':
-          case 'CBG':
-          case 'Price_1pc':
-          case 'Price_1g':
-          case 'Price_5g':
-          case 'Price_20g':
-            acc[key as keyof MenuRow] = parseNumber(value);
-            break;
-          case 'Our':
-            acc.Our = parseBoolean(value);
-            break;
-          default:
-            acc[key as keyof MenuRow] = value;
+        if (key === 'Our') {
+          item.Our = parseBoolean(value);
+        } else if (key in item) {
+          (item as any)[key] = value;
         }
+      });
+      
 
-        return acc;
-      }, {} as MenuRow)
-    )
-    .filter((item) => item.Name && item.Category); // отфильтровываем пустые строки
+      return item as MenuRow;
+    })
+    .filter((row) => row.Name && row.Category);
 }

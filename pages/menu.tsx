@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 import type { GetStaticProps, NextPage } from 'next';
 import Image from 'next/image';
 import clsx from 'clsx';
