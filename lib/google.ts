@@ -54,15 +54,15 @@ export async function fetchMenu(): Promise<MenuRow[]> {
       const item: Partial<MenuRow> = {};
 
       header.forEach((key, i) => {
+        const k = key as keyof MenuRow;
         const value = r[i];
 
-        if (key === 'Our') {
+        if (k === 'Our') {
           item.Our = parseBoolean(value);
-        } else if (key in item) {
-          (item as any)[key] = value;
+        } else {
+          item[k] = value as never; // TypeScript hack: we know value is compatible
         }
       });
-      
 
       return item as MenuRow;
     })
