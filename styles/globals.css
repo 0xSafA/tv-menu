@@ -1,61 +1,81 @@
-/* ────────────────────  Tailwind layers  ──────────────────── */
+/* ──────────── Tailwind layers ──────────── */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* ─────────────────  Brand-tokens и темы  ─────────────────── */
+/* ─────── Brand-tokens (CSS-переменные) ─────── */
 :root {
   /* фирменная зелёная палитра OG Lab */
-  --color-primary:        #536C4A;  /* основной зелёный */
-  --color-primary-light:  #B0BF93;  /* светлый зелёный */
-  --color-primary-dark:   #3B4E38;  /* тёмный зелёный */
+  --color-primary: #536C4A;
+  /* основной зелёный */
+  --color-primary-light: #B0BF93;
+  /* светлый зелёный */
+  --color-primary-dark: #3B4E38;
+  /* тёмный зелёный */
 
   /* тёмная (TV) тема по умолчанию */
-  --color-bg:   #0F0F0F;
+  --color-bg: #0F0F0F;
   --color-text: #ECECEC;
-  --color-muted:#8A8A8A;
+  --color-muted: #8A8A8A;
 }
 
-/* светлая тема — автоматически, если система предпочитает light  */
+/* светлая тема — если система предпочитает light */
 @media (prefers-color-scheme: light) {
   :root {
-    --color-bg:   #FFFFFF;
+    --color-bg: #FFFFFF;
     --color-text: #171717;
-    --color-muted:#666666;
+    --color-muted: #666666;
   }
 }
 
-/* ───────────────  Базовый reset + глобальные стили  ───────── */
+/* ───────────── Base layer ───────────── */
 @layer base {
+
   html,
   body {
-    @apply bg-[--color-bg] text-[--color-text] font-body antialiased;
+    @apply antialiased bg-[var(--color-bg)] text-[var(--color-text)];
     max-width: 100vw;
     overflow-x: hidden;
+    font-family: var(--font-inter, Inter, sans-serif);
   }
 
   table {
-  border-collapse: collapse;
-}
+    @apply border-collapse;
+  }
 
-  *, *::before, *::after {
+  *,
+  *::before,
+  *::after {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
   }
 
   a {
-    text-decoration: none;
-    @apply text-[--color-primary];
+    @apply text-[var(--color-primary)] no-underline;
   }
 
-  /* скрываем системный курсор в режиме TV-меню (по желанию) */
+  /* скрываем курсор в режиме TV-меню */
   body.menu-mode {
     cursor: none;
   }
 
-  /* для браузеров, которые подхватывают color-scheme */
-  @media (prefers-color-scheme: dark) {
-    html { color-scheme: dark; }
+  /* подсказываем браузеру обе цветовые схемы */
+  html {
+    color-scheme: light dark;
+  }
+}
+
+/* ───────────── Components layer ───────────── */
+@layer components {
+
+  /* зелёная плашка-заголовок секции */
+  .menu-section-title {
+    @apply bg-brand-dark text-white font-semibold tracking-wide px-3 py-1 uppercase rounded-sm;
+  }
+
+  /* маленький цветной кружок-индикатор */
+  .dot {
+    @apply inline-block w-2 h-2 rounded-full mr-2 align-middle;
   }
 }

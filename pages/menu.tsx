@@ -1,208 +1,129 @@
-// pages/menu.tsx
-import type { GetStaticProps, NextPage } from "next";
-import Image from "next/image";
-import clsx from "clsx";
+/* eslint-disable @next/next/no-img-element */
+import type { GetStaticProps, NextPage } from 'next';
+import Image from 'next/image';
+import clsx from 'clsx';
 
-import { fetchMenu, MenuRow } from "../lib/google";
-import { columnsPerCategory, groupRows, layoutOrder } from "../lib/menu-helpers";
-
-/* ─────────────────────────────── types ──────────────────────────── */
+import { fetchMenu, MenuRow } from '../lib/google';
+import { groupRows } from '../lib/menu-helpers';
 
 interface MenuProps {
   rows: MenuRow[];
 }
 
-/* ─────────────────────–– цвет кружка по типу ───────────────────── */
+/* ──────────────────────────────────────────────────────────── */
+/*  Раскладка блоков по колонкам                                */
+/* ──────────────────────────────────────────────────────────── */
+const layout: string[][] = [
+  ['Top Shelf', 'Mid Shelf'], // левая
+  ['Premium Quality', 'Smalls (popcorn)', 'CBD'], // центр
+  ['Fresh Frosen Hash', 'Dry Sift Hash', 'Ice Bubble Hash', 'Hash Rosin'], // правая
+];
 
-const typeColor = {
-  hybrid:  "#4f7bff",
-  hybride: "#4f7bff",  // поддержка написания «Hybride»
-  sativa:  "#ff6633",
-  indica:  "#38b24f",
-} as const;
+/* ──────────────────────────────────────────────────────────── */
+/*  Цвет кружка у позиции                                       */
+/* ──────────────────────────────────────────────────────────── */
+const bullet = (type: string) =>
+  clsx('dot', {
+    'bg-strain-indica': /indica/i.test(type),
+    'bg-strain-sativa': /sativa/i.test(type),
+    'bg-strain-hybrid': /hybrid/i.test(type),
+  });
 
-type KnownType = keyof typeof typeColor;
-
-/** Вернёт цветовой ключ или `null`, если Type не распознан */
-function getTypeKey(row: MenuRow): KnownType | null {
-  const raw = (row as { Type?: string }).Type?.toLowerCase();
-  if (!raw) return null;                    // нет значения
-  if (raw === "hybride") return "hybrid";   // нормализуем
-  return (raw in typeColor ? raw : null) as KnownType | null;
-}
-
-/* ───────────────────────── страница ────────────────────────────── */
-
+/* ──────────────────────────────────────────────────────────── */
+/*  Компонент страницы                                          */
+/* ──────────────────────────────────────────────────────────── */
 const MenuPage: NextPage<MenuProps> = ({ rows }) => {
   const grouped = groupRows(rows);
 
   return (
-    <main className="min-h-screen flex flex-col items-center font-[Inter]">
-      {/* верхняя линия */}
-      <Line />
-
-      {/* логотип + MENU */}
-      <header className="flex items-center justify-center gap-3 text-[#536C4A] py-2">
-        <Image src="/logo-og-lab.svg" alt="OG Lab" width={72} height={32} priority />
-        <h1 className="text-3xl font-semibold tracking-wide">MENU</h1>
+    <main className='h-screen w-screen flex flex-col font-sans'>
+      {/* ---------- header ---------- */}
+      <header className='flex items-center justify-center gap-2 py-4'>
+        <Image src='/logo-oglab.svg' alt='OG Lab logo' width={32} height={32} />
+        <h1 className='text-3xl font-bold tracking-widest'>MENU</h1>
       </header>
 
-      {/* три колонки */}
-      <section className="w-full max-w-6xl px-4 pb-4 relative">
-        <div
-          className="grid gap-6"
-          style={{ gridTemplateColumns: "2fr 2fr 1fr" }}
-        >
-          {layoutOrder.map((cats, col) => (
-            <div key={col} className={clsx("space-y-6", col === 2 && "pl-6")}>
-              {cats.map((c) => (
-                <CategoryBlock key={c} name={c} rows={grouped[c] ?? []} />
-              ))}
-            </div>
-          ))}
-        </div>
+      {/* ---------- body ---------- */}
+      <section className='flex-1 grid grid-cols-3 gap-6 px-6 overflow-hidden'>
+        {layout.map((col, i) => (
+          <div key={i} className='space-y-6'>
+            {col.map((cat) => (
+              <div key={cat} className='space-y-1'>
+                <h2 className='menu-section-title'>{cat}</h2>
 
-        {/* вертикальная линия */}
-        <span className="absolute left-2/3 top-0 h-full w-[3px]" style={{ backgroundColor: "#b0bf93" }} />
+                {/* таблица позиций */}
+                <ul className='text-sm'>
+                  {grouped[cat]?.map((item) => (
+                    <li
+                      key={item.Name}
+                      className='grid grid-cols-[auto_3.25rem_3.25rem_3.25rem] gap-1 py-0.5 whitespace-nowrap'
+                    >
+                      <span className='flex items-center gap-1'>
+                        <span className={bullet(item.Type)} />
+                        {item.Our && (
+                          <Image
+                            src='/leaf.svg'
+                            alt='Our farm-grown'
+                            width={14}
+                            height={14}
+                            className='inline-block'
+                          />
+                        )}
+                        {item.Name}
+                      </span>
+                      <span className='text-right'>{item.THC}%</span>
+                      <span className='text-right'>{item.Price_5g}฿</span>
+                      <span className='text-right'>{item.Price_20g}฿</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        ))}
       </section>
 
-      {/* легенда */}
-      <footer className="w-full max-w-6xl flex flex-wrap items-center text-xs gap-2 pb-4 px-4">
-        <LegendDot color={typeColor.hybrid}  label="Hybrid"          />
-        <LegendDot color={typeColor.sativa}  label="Dominant Sativa" />
-        <LegendDot color={typeColor.indica}  label="Dominant Indica" />
-        <LegendDot color="#536C4A" label="Our farm-grown" isLeaf />
+      {/* ---------- footer + legend ---------- */}
+      <footer className='text-xs tracking-wide py-3 border-t border-brand-light'>
+        <div className='flex flex-wrap items-center justify-center gap-6'>
+          {/* легенда кружков */}
+          <span className='flex items-center gap-1'>
+            <span className='dot bg-strain-sativa' />
+            Sativa&nbsp;Dominant
+          </span>
+          <span className='flex items-center gap-1'>
+            <span className='dot bg-strain-indica' />
+            Indica&nbsp;Dominant
+          </span>
+          <span className='flex items-center gap-1'>
+            <span className='dot bg-strain-hybrid' />
+            Hybrid
+          </span>
+          {/* легенда «листок» */}
+          <span className='flex items-center gap-1'>
+            <Image src='/leaf.svg' alt='' width={14} height={14} />
+            Our&nbsp;farm-grown
+          </span>
+        </div>
 
-        <span className="px-2 py-1 border rounded border-[#536C4A] text-[#536C4A]">
-          Minimum order&nbsp;5&nbsp;G
-        </span>
-        <span className="ml-auto">Ask your budtender about a Dab Session</span>
+        {/* CTA под легендой */}
+        <p className='mt-2 text-center'>
+          Ask your budtender about a&nbsp;Dab Session
+        </p>
       </footer>
-
-      {/* нижняя линия */}
-      <Line />
     </main>
   );
 };
 
-export default MenuPage;
-
-/* ───────────────────────– SSG ─────────────────────── */
-
+/* ──────────────────────────────────────────────────────────── */
+/*  Извлечение данных из Google Sheets (ISR 5 мин)              */
+/* ──────────────────────────────────────────────────────────── */
 export const getStaticProps: GetStaticProps<MenuProps> = async () => {
   const rows = await fetchMenu();
-  return { props: { rows }, revalidate: 900 };
+  return {
+    props: { rows },
+    revalidate: 300, // 5 минут
+  };
 };
 
-/* ───────────────────── вспомогательные ───────────────────── */
-
-function CategoryBlock({ name, rows }: { name: string; rows: MenuRow[] }) {
-  const conf =
-    columnsPerCategory[name] ??
-    (name.toUpperCase().includes("HASH")
-      ? { label: "", keys: ["Price_1g", "Price_5g"] }
-      : { label: "THC", keys: ["THC", "Price_5g", "Price_20g"] });
-
-  return (
-    <div className="space-y-1">
-      {/* зелёная плашка */}
-      <div
-        className="text-white font-semibold tracking-wide px-3 py-1 uppercase text-sm"
-        style={{ backgroundColor: "#536C4A" }}
-      >
-        {name}
-      </div>
-
-      {/* таблица */}
-      <table className="w-full text-sm border-collapse">
-        <thead>
-          <tr className="text-xs uppercase text-[#536C4A]">
-            {conf.label && <th className="text-left py-0.5">{conf.label}</th>}
-            {conf.keys
-              .filter((k) => k !== "THC" && k !== "CBG")
-              .map((k) => (
-                <th key={k} className="text-right py-0.5">
-                  {headerLabel(k)}
-                </th>
-              ))}
-          </tr>
-        </thead>
-        <tbody>
-          {rows.map((r) => {
-            const typeKey = getTypeKey(r);
-            return (
-              <tr key={r.Name} className="align-top">
-                {/* название + иконки */}
-                <td className="py-0.5 pr-1 whitespace-nowrap">
-                  {/* кружок только если тип распознан */}
-                  {typeKey && (
-                    <span
-                      className="inline-block w-[8px] h-[8px] rounded-full mr-1 align-middle"
-                      style={{ backgroundColor: typeColor[typeKey] }}
-                    />
-                  )}
-                  {/* листик Our farm */}
-                  {r.Tag === "our" && (
-                    <Image
-                      src="/icons/leaf.svg"
-                      alt="leaf"
-                      width={10}
-                      height={10}
-                      className="inline mr-1 align-middle"
-                    />
-                  )}
-                  {r.Name}
-                </td>
-
-                {/* остальные колонки */}
-                {conf.keys
-                  .filter((k) => k !== "THC" && k !== "CBG")
-                  .map((k) => (
-                    <td key={k} className="py-0.5 text-right">
-                      {r[k] ?? "-"}
-                    </td>
-                  ))}
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
-    </div>
-  );
-}
-
-const Line = () => (
-  <div className="w-full max-w-6xl h-[3px]" style={{ backgroundColor: "#b0bf93" }} />
-);
-
-function headerLabel(key: string) {
-  return (
-    {
-      Price_1pc: "1PC",
-      Price_1g: "1G",
-      Price_5g: "5G+",
-      Price_20g: "20G+",
-    } as Record<string, string>
-  )[key] ?? key;
-}
-
-function LegendDot({
-  color,
-  label,
-  isLeaf,
-}: {
-  color: string;
-  label: string;
-  isLeaf?: boolean;
-}) {
-  return (
-    <span className="flex items-center gap-1 mr-2">
-      {isLeaf ? (
-        <Image src="/icons/leaf.svg" alt="leaf" width={10} height={10} />
-      ) : (
-        <span className="inline-block w-[10px] h-[10px] rounded-full" style={{ backgroundColor: color }} />
-      )}
-      {label}
-    </span>
-  );
-}
+export default MenuPage;

@@ -21,7 +21,7 @@ export interface MenuRow {
   Price_1g?: string;
   Price_5g?: string;
   Price_20g?: string;
-  Tag?: string;
+  Type?: string;
   Our?: string;
 }
 
