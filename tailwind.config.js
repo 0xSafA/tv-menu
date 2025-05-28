@@ -1,29 +1,19 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: {
-    files: [
-      './pages/**/*.{ts,tsx}',
-      './components/**/*.{ts,tsx}',
-      './layouts/**/*.{ts,tsx}',
-      './lib/**/*.{ts,tsx}',
-    ],
-    safelist: [
-      'bg-brand-dark',
-      'bg-brand-light',
-      'bg-strain-indica',
-      'bg-strain-sativa',
-      'bg-strain-hybrid',
-    ],
-  },
+  content: [
+    './pages/**/*.{ts,tsx}',
+    './components/**/*.{ts,tsx}',
+    './lib/**/*.{ts,tsx}',
+  ],
   theme: {
     extend: {
+      fontFamily: {
+        heading: ['"Playfair Display"', 'serif'],
+        body: ['"Inter"', 'sans-serif'],
+      },
       colors: {
-        brand: { dark: '#536C4A', light: '#B0BF93' },
-        strain: {
-          hybrid: '#4F92FF',
-          sativa: '#FF6137',
-          indica: '#2ECC40',
-        },
+        primary: '#536C4A', // основной зелёный
+        accent: '#B0BF93', // светло-зелёный
       },
     },
   },

@@ -20,21 +20,31 @@ const sheets = google.sheets({ version: 'v4', auth });
 export interface MenuRow {
   Category: string;
   Name: string;
-  THC?: string;
-  CBG?: string;
-  Price_1pc?: string;
-  Price_1g?: string;
-  Price_5g?: string;
-  Price_20g?: string;
+  THC?: number;
+  CBG?: number;
+  Price_1pc?: number;
+  Price_1g?: number;
+  Price_5g?: number;
+  Price_20g?: number;
   Type?: string;
   Our?: boolean;
 }
 
-/** Преобразует строку TRUE/FALSE в boolean */
+/** Преобразует значение TRUE/FALSE в boolean */
 function parseBoolean(value: unknown): boolean | undefined {
-  if (value === 'TRUE' || value === true) return true;
-  if (value === 'FALSE' || value === false) return false;
+  if (typeof value === 'string') {
+    const v = value.trim().toUpperCase();
+    if (v === 'TRUE') return true;
+    if (v === 'FALSE') return false;
+  }
+  if (typeof value === 'boolean') return value;
   return undefined;
+}
+
+/** Преобразует значение в число (если возможно) */
+function parseNumber(value: unknown): number | undefined {
+  const n = typeof value === 'number' ? value : parseFloat(String(value));
+  return isNaN(n) ? undefined : n;
 }
 
 export async function fetchMenu(): Promise<MenuRow[]> {
@@ -47,20 +57,33 @@ export async function fetchMenu(): Promise<MenuRow[]> {
   const values = data.values;
   if (!values || !Array.isArray(values)) return [];
 
-  const [header, ...rows] = values as [string[], ...string[][]];
+  const [header, ...rows] = values as [string[], ...any[][]];
 
   return rows
     .map((r) => {
       const item: Partial<MenuRow> = {};
 
       header.forEach((key, i) => {
-        const k = key as keyof MenuRow;
+        const rawKey = key.trim();
         const value = r[i];
 
-        if (k === 'Our') {
-          item.Our = parseBoolean(value);
-        } else {
-          item[k] = value as never; // TypeScript hack: we know value is compatible
+        switch (rawKey) {
+          case 'Our':
+            item.Our = parseBoolean(value);
+            break;
+          case 'THC':
+          case 'CBG':
+          case 'Price_1pc':
+          case 'Price_1g':
+          case 'Price_5g':
+          case 'Price_20g':
+            item[rawKey as keyof MenuRow] = parseNumber(value) as never;
+            break;
+          case 'Category':
+          case 'Name':
+          case 'Type':
+            item[rawKey as keyof MenuRow] = String(value ?? '').trim() as never;
+            break;
         }
       });
 

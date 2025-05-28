@@ -1,38 +1,17 @@
-/* styles/globals.css */
-
-/* ───────── Tailwind layers ───────── */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* ───────── Brand tokens ───────── */
-:root {
-  --color-primary: #536C4A;
-  --color-primary-light: #B0BF93;
-  --color-primary-dark: #3B4E38;
+/* Подключаем Google-шрифты */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:wght@700&display=swap');
+
+html,
+body {
+  @apply font-body text-primary antialiased;
 }
 
-/* ───────── Base layer ───────── */
-@layer base {
-
-  html,
-  body {
-    @apply antialiased bg-white text-[#111] overflow-x-hidden;
-    font-family: var(--font-inter, Inter, sans-serif);
-  }
-
-  a {
-    @apply text-[var(--color-primary)];
-  }
-}
-
-/* ───────── Components layer ───────── */
-@layer components {
-  .menu-section-title {
-    @apply bg-[var(--color-primary)] text-white px-3 py-1 uppercase font-semibold tracking-wide text-sm rounded-sm;
-  }
-
-  .dot {
-    @apply inline-block w-[8px] h-[8px] rounded-full mr-[6px] align-middle;
-  }
+h1,
+h2,
+h3 {
+  @apply font-heading;
 }
