@@ -1,6 +1,5 @@
-import type { Config } from 'tailwindcss';
-
-const config: Config = {
+/** @type {import('tailwindcss').Config} */
+module.exports = {
   content: {
     files: [
       './pages/**/*.{ts,tsx}',
@@ -8,7 +7,6 @@ const config: Config = {
       './layouts/**/*.{ts,tsx}',
       './lib/**/*.{ts,tsx}',
     ],
-    // @ts-expect-error  — поле появилось в Tailwind 4, но ещё не описано в d.ts
     safelist: [
       'bg-brand-dark',
       'bg-brand-light',
@@ -20,10 +18,7 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        brand: {
-          dark: '#536C4A',
-          light: '#B0BF93',
-        },
+        brand: { dark: '#536C4A', light: '#B0BF93' },
         strain: {
           hybrid: '#4F92FF',
           sativa: '#FF6137',
@@ -34,5 +29,3 @@ const config: Config = {
   },
   plugins: [],
 };
-
-export default config;
