@@ -9,11 +9,11 @@ export const columnsPerCategory: Record<
 > = {
   'TOP SHELF': { label: 'THC', keys: ['THC', 'Price_5g', 'Price_20g'] },
   'MID SHELF': { label: 'THC', keys: ['THC', 'Price_5g', 'Price_20g'] },
-  'PREMIUM QUALITY': { label: 'THC', keys: ['THC', 'Price_5g', 'Price_20g'] },
-  'SMALLS (POPCORN)': { label: 'THC', keys: ['THC', 'Price_5g', 'Price_20g'] },
-  CBG: { label: 'CBG', keys: ['CBG', 'Price_5g', 'Price_20g'] },
+  'PREMIUM': { label: 'THC', keys: ['THC', 'Price_5g', 'Price_20g'] },
+  'SMALLS': { label: 'THC', keys: ['THC', 'Price_5g', 'Price_20g'] },
+  'CBG': { label: 'CBG', keys: ['CBG', 'Price_5g', 'Price_20g'] },
   'PRE ROLLS': { label: '', keys: ['Price_1pc'] },
-  PIATELLA: { label: '', keys: ['Price_1g', 'Price_5g'] },
+  'PIATELLA': { label: '', keys: ['Price_1g', 'Price_5g'] },
   'FRESH FROZEN HASH': { label: '', keys: ['Price_1g', 'Price_5g'] },
   'LIVE HASH ROSIN': { label: '', keys: ['Price_1g', 'Price_5g'] },
   'DRY SIFT HASH': { label: '', keys: ['Price_1g', 'Price_5g'] },
@@ -25,7 +25,7 @@ export const columnsPerCategory: Record<
  */
 export const layout: string[][] = [
   ['TOP SHELF', 'MID SHELF'],
-  ['PREMIUM QUALITY', 'SMALLS (POPCORN)', 'CBG', 'PRE ROLLS', 'PIATELLA'],
+  ['PREMIUM', 'SMALLS', 'CBG', 'PRE ROLLS', 'PIATELLA'],
   ['FRESH FROZEN HASH', 'LIVE HASH ROSIN', 'DRY SIFT HASH', 'ICE BUBBLE HASH'],
 ];
 

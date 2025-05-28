@@ -13,9 +13,9 @@ interface MenuProps {
 /*  Раскладка блоков по колонкам                                */
 /* ──────────────────────────────────────────────────────────── */
 const layout: string[][] = [
-  ['Top Shelf', 'Mid Shelf'], // левая
-  ['Premium Quality', 'Smalls (popcorn)', 'CBD'], // центр
-  ['Fresh Frosen Hash', 'Dry Sift Hash', 'Ice Bubble Hash', 'Hash Rosin'], // правая
+  ['TOP SHELF', 'MID SHELF'], // левая
+  ['PREMIUM', 'SMALL', 'CBG',  'PRE ROLLS', 'PIATELLA'], // центр
+  ['FRESH FROZEN HASH', 'LIVE HASH ROSIN', 'DRY SIFT HASH', 'ICE BUBBLE HASH'], // правая
 ];
 
 /* ──────────────────────────────────────────────────────────── */

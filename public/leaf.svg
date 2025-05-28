@@ -1,18 +1,6 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
-<!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
-<svg height="800px" width="800px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
-	 viewBox="0 0 504.125 504.125" xml:space="preserve">
-<path style="fill:#3A7F0D;" d="M339.772,0c0,0,44.536,108.954-146.337,182.138C89.719,221.893,10.059,323.789,105.173,481.193
-	c7.877-70.357,41.653-225.485,186.888-260.884c0,0-135.176,50.546-147.117,279.347c69.459,9.752,232.361,16.305,280.726-125.062
-	C489.536,187.817,339.772,0,339.772,0z"/>
-<path style="fill:#49A010;" d="M145.007,498.704c147.456-58.849,254.748-196.71,269.556-361.283C384.418,56.107,339.772,0,339.772,0
-	s44.536,108.954-146.337,182.138C89.719,221.893,10.059,323.789,105.173,481.193c7.877-70.357,41.653-225.485,186.888-260.884
-	C292.053,220.31,157.279,270.73,145.007,498.704z"/>
-<circle style="fill:#3A7F0D;" cx="90.459" cy="171.985" r="13.785"/>
-<g>
-	<circle style="fill:#49A010;" cx="133.782" cy="158.2" r="9.846"/>
-	<circle style="fill:#49A010;" cx="124.921" cy="64.662" r="24.615"/>
-	<circle style="fill:#49A010;" cx="200.736" cy="120.785" r="7.877"/>
-	<circle style="fill:#49A010;" cx="266.713" cy="76.477" r="22.646"/>
-</g>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 800 800" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+    <path d="M539.187,0C539.187,0 609.861,172.9 306.964,289.036C142.376,352.124 15.963,513.823 166.9,763.609C179.4,651.959 232.999,405.785 463.474,349.61C463.474,349.61 248.962,429.822 230.013,792.908C340.238,808.384 598.748,818.783 675.499,594.446C776.849,298.048 539.187,0 539.187,0Z" style="fill:rgb(58,127,13);fill-rule:nonzero;"/>
+    <path d="M230.113,791.397C464.112,698.009 634.374,479.237 657.873,218.074C610.036,89.037 539.187,0 539.187,0C539.187,0 609.861,172.9 306.964,289.036C142.376,352.124 15.963,513.823 166.9,763.609C179.4,651.959 232.999,405.785 463.474,349.61C463.461,349.612 249.587,429.624 230.113,791.397Z" style="fill:rgb(73,160,16);fill-rule:nonzero;"/>
 </svg>
