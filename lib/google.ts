@@ -57,7 +57,7 @@ export async function fetchMenu(): Promise<MenuRow[]> {
   const values = data.values;
   if (!values || !Array.isArray(values)) return [];
 
-  const [header, ...rows] = values as [string[], ...any[][]];
+  const [header, ...rows] = values as [string[], ...unknown[][]];
 
   return rows
     .map((r) => {
