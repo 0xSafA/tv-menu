@@ -18,6 +18,7 @@ module.exports = {
         primary: '#536C4A', // основной зелёный
         accent: '#B0BF93', // светло-зелёный
       },
+  
     },
   },
   plugins: [],

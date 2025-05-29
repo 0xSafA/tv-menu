@@ -12,7 +12,7 @@
 
 html,
 body {
-  @apply font-body text-primary antialiased;
+  @apply font-sans text-primary antialiased;
 }
 
 h1,
