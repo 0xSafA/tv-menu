@@ -52,33 +52,25 @@ const MenuPage: NextPage<MenuProps> = ({ rows }) => {
         <h1 className='text-3xl font-extrabold tracking-widest'>MENU</h1>
       </header>
 
-      {/* СЕТКА: 1-кол. <640 px, 3-кол. >=640 px */}
       <section className='w-full max-w-[1380px] pb-6 px-4 relative'>
         <div className='grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-[2fr_2fr_1fr] gap-8'>
-          {categories.map((cat, idx) => (
-            <div key={cat} className={clsx('space-y-8', idx === 2 && 'pl-6')}>
-              <div className='grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-[2fr_2fr_1fr] gap-8'>
-                {/* Первая колонка */}
-                <div className='space-y-8'>
-                  <CategoryBlock name={categories[0]} rows={grouped[categories[0]] ?? []} />
-                </div>
+          {/* Левая колонка */}
+          <div className='space-y-8'>
+            <CategoryBlock name='TOP SHELF' rows={grouped['TOP SHELF'] ?? []} />
+          </div>
 
-                {/* Вторая колонка */}
-                <div className='space-y-8'>
-                  <CategoryBlock name={categories[1]} rows={grouped[categories[1]] ?? []} />
-                </div>
+          {/* Центральная колонка */}
+          <div className='space-y-8'>
+            <CategoryBlock name='MID SHELF' rows={grouped['MID SHELF'] ?? []} />
+          </div>
 
-                {/* Третья колонка, обёрнутая в relative-контейнер */}
-                <div className='relative space-y-8 pl-6'>
-                  {/* Вертикальная линия */}
-                  <span className='hidden lg:block absolute left-[-12px] top-0 h-full w-[3px] bg-[var(--color-primary-light)]' />
-                  <CategoryBlock name={categories[2]} rows={grouped[categories[2]] ?? []} />
-                </div>
-              </div>            </div>
-          ))}
+          {/* Правая колонка */}
+          <div className='relative space-y-8 pl-6'>
+            {/* Вертикальная линия перед правой колонкой */}
+            <span className='hidden lg:block absolute left-[-12px] top-0 h-full w-[3px] bg-[var(--color-primary-light)]' />
+            <CategoryBlock name='PREMIUM' rows={grouped['PREMIUM'] ?? []} />
+          </div>
         </div>
-        {/* вертикальная линия — только на больших экранах */}
-        <span className='hidden lg:block absolute left-[calc(100%*4/5)] top-0 h-full w-[3px] bg-[var(--color-primary-light)]' />
       </section>
 
       {/* легенда */}
