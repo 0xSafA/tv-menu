@@ -40,7 +40,7 @@ const MenuPage: NextPage<MenuProps> = ({ rows }) => {
     <div className='mt-4' />
       {/* логотип + MENU */}
       <header className='flex items-center justify-center gap-3 text-[#536C4A] py-3'>
-        <Image src='/logo-og-lab.svg' alt='OG Lab logo' height={32} />
+        <Image src='/logo-og-lab.svg' alt='OG Lab logo' height={30} />
         <h1 className='text-3xl font-extrabold tracking-widest'>MENU</h1>
       </header>
 
