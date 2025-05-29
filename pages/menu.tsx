@@ -4,36 +4,38 @@ import Image from 'next/image';
 import clsx from 'clsx';
 
 import { fetchMenu, MenuRow } from '@/lib/google';
-import { columnsPerCategory, groupRows, layoutOrder } from '@/lib/menu-helpers';
+import { columnsPerCategory, groupRows } from '@/lib/menu-helpers';
 
-/* ─────────────────────────────── types ─────────────────────────── */
-
+/* ───────────────────────────── types ─────────────────────────── */
 interface MenuProps {
   rows: MenuRow[];
 }
 
-/* ─────────────–– цветные индикаторы ───────────── */
-
+/* ───────────── цветные индикаторы ───────────── */
 const typeColor = {
-  hybrid: '#4f7bff', // синий
-  hybride: '#4f7bff', // alias
-  sativa: '#ff6633', // оранж.
-  indica: '#38b24f', // зелёный
+  hybrid: '#4f7bff',
+  hybride: '#4f7bff',
+  sativa: '#ff6633',
+  indica: '#38b24f',
 } as const;
-
 type KnownType = keyof typeof typeColor;
-
-function getTypeKey(row: MenuRow): KnownType | null {
-  const raw = (row as { Type?: string }).Type?.toLowerCase();
+const getTypeKey = (row: MenuRow): KnownType | null => {
+  const raw = row.Type?.toLowerCase();
   if (!raw) return null;
   if (raw === 'hybride') return 'hybrid';
   return (raw in typeColor ? raw : null) as KnownType | null;
-}
+};
 
-/* ─────────────–– страница меню ───────────── */
-
+/* ───────────── страница меню ───────────── */
 const MenuPage: NextPage<MenuProps> = ({ rows }) => {
-  const grouped = groupRows(rows); // {category: MenuRow[]}
+  /* порядок категорий — как в таблице */
+  const categories = rows.reduce<string[]>((acc, r) => {
+    const cat = r.Category ?? 'UNCATEGORISED';
+    if (!acc.includes(cat)) acc.push(cat);
+    return acc;
+  }, []);
+
+  const grouped = groupRows(rows); // { category: MenuRow[] }
 
   return (
     <main className='min-h-screen flex flex-col items-center font-[Inter] text-[#111] bg-white'>
@@ -51,20 +53,18 @@ const MenuPage: NextPage<MenuProps> = ({ rows }) => {
         <h1 className='text-3xl font-extrabold tracking-widest'>MENU</h1>
       </header>
 
-      {/* 3-колоночная сетка */}
+      {/* СЕТКА: 1-кол. <640 px, 3-кол. >=640 px */}
       <section className='w-full max-w-[1380px] pb-6 px-4 relative'>
         <div className='grid grid-cols-1 sm:grid-cols-[2fr_2fr_1fr] gap-8'>
-          {layoutOrder.map((cats, idx) => (
-            <div key={idx} className={clsx('space-y-8', idx === 2 && 'pl-6')}>
-              {cats.map((cat) => (
-                <CategoryBlock key={cat} name={cat} rows={grouped[cat] ?? []} />
-              ))}
+          {categories.map((cat, idx) => (
+            <div key={cat} className={clsx('space-y-8', idx === 2 && 'pl-6')}>
+              <CategoryBlock name={cat} rows={grouped[cat] ?? []} />
             </div>
           ))}
         </div>
 
-        {/* вертикальная линия */}
-        <span className='absolute lg:left-2/3 top-0 h-full w-[3px] bg-[var(--color-primary-light)]' />
+        {/* вертикальная линия — только на больших экранах */}
+        <span className='hidden lg:block absolute left-2/3 top-0 h-full w-[3px] bg-[var(--color-primary-light)]' />
       </section>
 
       {/* легенда */}
@@ -81,18 +81,15 @@ const MenuPage: NextPage<MenuProps> = ({ rows }) => {
     </main>
   );
 };
-
 export default MenuPage;
 
-/* ─────────────–– SSG (ISR 15 мин) ───────────── */
-
+/* ───────────── SSG (ISR 15 мин) ───────────── */
 export const getStaticProps: GetStaticProps<MenuProps> = async () => {
   const rows = await fetchMenu();
   return { props: { rows }, revalidate: 900 };
 };
 
-/* ─────────────–– helpers & ui ───────────── */
-
+/* ───────────── helpers & ui ───────────── */
 function CategoryBlock({ name, rows }: { name: string; rows: MenuRow[] }) {
   const conf =
     columnsPerCategory[name] ??
@@ -102,7 +99,7 @@ function CategoryBlock({ name, rows }: { name: string; rows: MenuRow[] }) {
 
   return (
     <div className='space-y-1'>
-      {/* зелёная плашка с колоночными подписями */}
+      {/* шапка секции */}
       <div className='menu-section-title flex items-center'>
         <span className='flex-1'>{name}</span>
         {conf.label && (
@@ -164,9 +161,13 @@ const Line = () => (
   <div className='w-full max-w-[1380px] h-[3px] bg-[var(--color-primary-light)]' />
 );
 
-function headerLabel(k: string) {
-  return { Price_1g: '1G+', Price_5g: '5G+', Price_20g: '20G+' }[k] ?? k;
-}
+const headerLabel = (k: string) =>
+  ((
+    { Price_1g: '1G+', Price_5g: '5G+', Price_20g: '20G+' } as Record<
+      string,
+      string
+    >
+  )[k] ?? k);
 
 function LegendDot({
   color,
