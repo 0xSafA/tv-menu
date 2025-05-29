@@ -55,7 +55,7 @@ const MenuPage: NextPage<MenuProps> = ({ rows }) => {
 
       {/* СЕТКА: 1-кол. <640 px, 3-кол. >=640 px */}
       <section className='w-full max-w-[1380px] pb-6 px-4 relative'>
-        <div className='grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-[2fr_2fr_1fr] gap-8'>
+        <div className='grid grid-cols-1 sm:grid-cols-[2fr_2fr_1fr] gap-8'>
           {categories.map((cat, idx) => (
             <div key={cat} className={clsx('space-y-8', idx === 2 && 'pl-6')}>
               <CategoryBlock name={cat} rows={grouped[cat] ?? []} />

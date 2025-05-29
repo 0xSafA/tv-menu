@@ -1,14 +1,14 @@
+:root {
+  --color-primary: #536C4A;
+  --color-primary-light: #B0BF93;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 /* Подключаем Google-шрифты */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:wght@700&display=swap');
-
-:root {
-  --color-primary: #536C4A;
-  --color-primary-light: #B0BF93;
-}
 
 html,
 body {

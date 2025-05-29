@@ -9,16 +9,16 @@ module.exports = {
     'grid',
     'grid-cols-3',
     'grid-cols-1',
-    'sm:grid-cols-[2fr_2fr_1fr]',
     'gap-8',
+    { pattern: /grid-cols-\[2fr_2fr_1fr\]/, variants: ['sm', 'lg'] },
   ],
-    theme: {
-        extend: {
-          colors: {
-            primary: '#536C4A',   // основной зелёный
-            accent:  '#B0BF93',   // светло-зелёный
-          },
-        },
+  theme: {
+    extend: {
+      colors: {
+        primary: '#536C4A', // основной зелёный
+        accent: '#B0BF93', // светло-зелёный
       },
+    },
+  },
   plugins: [],
 };
