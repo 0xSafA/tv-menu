@@ -1,7 +1,6 @@
 // pages/menu.tsx
 import type { GetStaticProps, NextPage } from 'next';
 import Image from 'next/image';
-
 import { fetchMenu, MenuRow } from '@/lib/google';
 import { columnsPerCategory, groupRows } from '@/lib/menu-helpers';
 
@@ -18,9 +17,11 @@ const typeColor = {
   indica: '#38b24f',
 } as const;
 type KnownType = keyof typeof typeColor;
+
 const getTypeKey = (row: MenuRow): KnownType | null => {
   const raw = row.Type?.toLowerCase();
   if (!raw) return null;
+
   if (raw === 'hybride') return 'hybrid';
   return (Object.keys(typeColor) as KnownType[]).includes(raw as KnownType) ? (raw as KnownType) : null;
 };
@@ -41,7 +42,7 @@ const MenuPage: NextPage<MenuProps> = ({ rows }) => {
 
       {/* логотип + MENU */}
       <header className='flex items-center justify-center gap-3 text-[#536C4A] py-3'>
-        <Image src='/logo-og-lab.svg' alt='OG Lab logo' height={38} />
+        <Image src='/logo-og-lab.svg' alt='OG Lab logo' height={36} />
         <h1 className='text-3xl font-extrabold tracking-widest'>MENU</h1>
       </header>
 
@@ -62,23 +63,21 @@ const MenuPage: NextPage<MenuProps> = ({ rows }) => {
           </div>
 
           {/* 3 колонка */}
-          <div className='relative pl-6'>
+          <div className='relative space-y-8 pl-6'>
             <span className='hidden lg:block absolute left-[-12px] top-0 h-full w-[3px] bg-[var(--color-primary-light)]' />
-            <div className='space-y-8'>
-              {column3.map(cat => (
-                <CategoryBlock key={cat} name={cat} rows={grouped[cat] ?? []} />
-              ))}
-            </div>
+            {column3.map(cat => (
+              <CategoryBlock key={cat} name={cat} rows={grouped[cat] ?? []} />
+            ))}
           </div>
         </div>
       </section>
 
       {/* нижняя полоса */}
       <Line />
-    <div className='mt-4' />
+      <div className='mt-4' />
 
       {/* легенда */}
-      <footer className='mt-4 w-full max-w-[1380px] text-xs flex flex-wrap items-center gap-4 pb-6 px-4'>
+      <footer className='w-full max-w-[1380px] text-xs flex flex-wrap items-center gap-4 pb-6 px-4'>
         <LegendDot color={typeColor.hybrid} label='Hybrid' />
         <LegendDot color={typeColor.sativa} label='Dominant Sativa' />
         <LegendDot color={typeColor.indica} label='Dominant Indica' />
@@ -86,8 +85,6 @@ const MenuPage: NextPage<MenuProps> = ({ rows }) => {
         <span className='ml-auto'>Ask your budtender about a Dab Session</span>
       </footer>
 
-      {/* нижняя полоса */}
-      <Line />
     </main>
   );
 };
@@ -107,22 +104,26 @@ function CategoryBlock({ name, rows }: { name: string; rows: MenuRow[] }) {
       ? { label: '', keys: ['Price_1g', 'Price_5g'] }
       : { label: 'THC', keys: ['THC', 'Price_5g', 'Price_20g'] });
 
-  // Проверяем, есть ли хоть одно значение THC
-  const showTHC = rows.some(r => r.THC);
   const priceKeys = conf.keys.filter(k => k !== 'THC' && k !== 'CBG');
 
   return (
     <div className='space-y-1'>
-      {/* Заголовок секции */}
+      {/* шапка секции */}
       <div className='menu-section-title flex items-center bg-[#536C4A] text-white font-bold px-2 py-1 rounded-sm uppercase tracking-wide'>
         <span className='flex-1'>{name}</span>
-        {showTHC && <span className='w-12 text-right'>THC</span>}
-        {priceKeys.map(k => (
-          <span key={k} className='w-12 text-right'>{headerLabel(k)}</span>
-        ))}
+        {conf.label && (
+          <>
+            <span className='w-12 text-right'>{conf.label}</span>
+            {priceKeys.map(k => (
+              <span key={k} className='w-12 text-right'>
+                {headerLabel(k)}
+              </span>
+            ))}
+          </>
+        )}
       </div>
 
-      {/* Таблица */}
+      {/* таблица позиций */}
       <table className='w-full text-sm table-fixed'>
         <tbody>
           {rows.map((r) => {
@@ -130,7 +131,9 @@ function CategoryBlock({ name, rows }: { name: string; rows: MenuRow[] }) {
             return (
               <tr key={r.Name} className='align-top hover:bg-[#f9f9f9] transition-colors'>
                 <td className='py-0.5 pr-2 whitespace-nowrap'>
-                  {typeKey && <span className='dot' style={{ backgroundColor: typeColor[typeKey] }} />}
+                  {typeKey && (
+                    <span className='dot' style={{ backgroundColor: typeColor[typeKey] }} />
+                  )}
                   {r.Our && (
                     <Image
                       src='/leaf.svg'
@@ -142,15 +145,6 @@ function CategoryBlock({ name, rows }: { name: string; rows: MenuRow[] }) {
                   )}
                   {r.Name}
                 </td>
-
-                {/* THC */}
-                {showTHC && (
-                  <td className='py-0.5 w-12 text-right'>
-                    {r.THC ? `${r.THC}%` : r.CBG ? `${r.CBG}%` : '-'}
-                  </td>
-                )}
-
-                {/* Цены */}
                 {priceKeys.map((k) => (
                   <td key={k} className='py-0.5 w-12 text-right'>
                     {r[k] ? `${r[k]}฿` : '-'}
