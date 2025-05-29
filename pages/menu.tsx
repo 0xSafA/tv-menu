@@ -42,7 +42,7 @@ const MenuPage: NextPage<MenuProps> = ({ rows }) => {
 
       {/* логотип + MENU */}
       <header className='flex items-center justify-center gap-3 text-[#536C4A] py-3'>
-        <Image src='/logo-og-lab.svg' alt='OG Lab logo' height={38} />
+        <Image src='/logo-og-lab.svg' alt='OG Lab logo' height={36} />
         <h1 className='text-3xl font-extrabold tracking-widest'>MENU</h1>
       </header>
 
@@ -74,6 +74,7 @@ const MenuPage: NextPage<MenuProps> = ({ rows }) => {
 
       {/* нижняя полоса */}
       <Line />
+      <div className='mt-4' />
 
       {/* легенда */}
       <footer className='w-full max-w-[1380px] text-xs flex flex-wrap items-center gap-4 pb-6 px-4'>
