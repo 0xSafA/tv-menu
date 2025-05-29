@@ -41,7 +41,7 @@ const MenuPage: NextPage<MenuProps> = ({ rows }) => {
 
       {/* логотип + MENU */}
       <header className='flex items-center justify-center gap-3 text-[#536C4A] py-3'>
-        <Image src='/logo-og-lab.svg' alt='OG Lab logo' height={36} />
+        <Image src='/logo-og-lab.svg' alt='OG Lab logo' height={32} />
         <h1 className='text-3xl font-extrabold tracking-widest'>MENU</h1>
       </header>
 
@@ -85,9 +85,6 @@ const MenuPage: NextPage<MenuProps> = ({ rows }) => {
         <LegendDot color='#536C4A' label='Our farm-grown' isLeaf />
         <span className='ml-auto'>Ask your budtender about a Dab Session</span>
       </footer>
-
-      {/* нижняя полоса */}
-      <Line />
     </main>
   );
 };
@@ -173,7 +170,8 @@ const headerLabel = (k: string) =>
   ({
     Price_1g: '1G+',
     Price_5g: '5G+',
-    Price_20g: '20G+',
+    Price_20g: '20+',
+    Price_1PC: '1PC'
   }[k] ?? k);
 
 function LegendDot({
