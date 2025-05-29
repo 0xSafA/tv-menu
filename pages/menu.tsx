@@ -47,8 +47,7 @@ const MenuPage: NextPage<MenuProps> = ({ rows }) => {
         <Image
           src='/logo-og-lab.svg'
           alt='OG Lab logo'
-          width={64}
-          height={28}
+          height={38}
         />
         <h1 className='text-3xl font-extrabold tracking-widest'>MENU</h1>
       </header>
@@ -147,7 +146,7 @@ function CategoryBlock({ name, rows }: { name: string; rows: MenuRow[] }) {
                   )}
                   {r.Our && (
                     <Image
-                      src='/icons/leaf.svg'
+                      src='/leaf.svg'
                       alt=''
                       width={12}
                       height={12}
@@ -196,7 +195,7 @@ function LegendDot({
   return (
     <span className='flex items-center gap-1'>
       {isLeaf ? (
-        <Image src='/icons/leaf.svg' alt='' width={12} height={12} />
+        <Image src='/leaf.svg' alt='' width={12} height={12} />
       ) : (
         <span className='dot' style={{ backgroundColor: color }} />
       )}
