@@ -51,21 +51,20 @@ const MenuPage: NextPage<MenuProps> = ({ rows }) => {
         <h1 className='text-3xl font-extrabold tracking-widest'>MENU</h1>
       </header>
 
-     {/* 3-колоночная сетка */}
-  <section className='w-full max-w-[1380px] pb-6 px-4 relative'>
-  <div className="grid grid-cols-[2fr_2fr_1fr] gap-8">
-    {layoutOrder.map((cats, idx) => (
-      <div key={idx} className={clsx('space-y-8', idx === 2 && 'pl-6')}>
-        {cats.map((cat) => (
-          <CategoryBlock key={cat} name={cat} rows={grouped[cat] ?? []} />
-        ))}
-      </div>
-    ))}
-    </div>
-
+      {/* 3-колоночная сетка */}
+      <section className='w-full max-w-[1380px] pb-6 px-4 relative'>
+        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8'>
+          {layoutOrder.map((cats, idx) => (
+            <div key={idx} className={clsx('space-y-8', idx === 2 && 'pl-6')}>
+              {cats.map((cat) => (
+                <CategoryBlock key={cat} name={cat} rows={grouped[cat] ?? []} />
+              ))}
+            </div>
+          ))}
+        </div>
 
         {/* вертикальная линия */}
-        <span className='absolute left-2/3 top-0 h-full w-[3px] bg-[var(--color-primary-light)]' />
+        <span className='absolute lg:left-2/3 top-0 h-full w-[3px] bg-[var(--color-primary-light)]' />
       </section>
 
       {/* легенда */}
