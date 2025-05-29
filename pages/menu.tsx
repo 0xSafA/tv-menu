@@ -1,8 +1,6 @@
 // pages/menu.tsx
 import type { GetStaticProps, NextPage } from 'next';
 import Image from 'next/image';
-import clsx from 'clsx';
-
 import { fetchMenu, MenuRow } from '@/lib/google';
 import { columnsPerCategory, groupRows } from '@/lib/menu-helpers';
 
@@ -19,56 +17,57 @@ const typeColor = {
   indica: '#38b24f',
 } as const;
 type KnownType = keyof typeof typeColor;
+
 const getTypeKey = (row: MenuRow): KnownType | null => {
   const raw = row.Type?.toLowerCase();
   if (!raw) return null;
+
   if (raw === 'hybride') return 'hybrid';
-  return (raw in typeColor ? raw : null) as KnownType | null;
+  return (Object.keys(typeColor) as KnownType[]).includes(raw as KnownType) ? (raw as KnownType) : null;
 };
+
+/* ───────────── категории по колонкам ───────────── */
+const column1 = ['TOP SHELF', 'MID SHELF'];
+const column2 = ['PREMIUM', 'SMALLS', 'CBG', 'PRE ROLLS', 'PIATELLA'];
+const column3 = ['FRESH FROZEN HASH', 'LIVE HASH ROSIN', 'DRY SIFT HASH', 'ICE BUBBLE HASH'];
 
 /* ───────────── страница меню ───────────── */
 const MenuPage: NextPage<MenuProps> = ({ rows }) => {
-  /* порядок категорий — как в таблице */
-  const categories = rows.reduce<string[]>((acc, r) => {
-    const cat = r.Category ?? 'UNCATEGORISED';
-    if (!acc.includes(cat)) acc.push(cat);
-    return acc;
-  }, []);
-
-  const grouped = groupRows(rows); // { category: MenuRow[] }
+  const grouped = groupRows(rows);
 
   return (
-    <main className='min-h-screen flex flex-col items-center font-[Inter] text-[#111] bg-white'>
+    <main className='min-h-screen flex flex-col items-center font-[Inter] text-neutral-900 bg-white'>
       {/* верхняя зелёная полоса */}
       <Line />
 
       {/* логотип + MENU */}
       <header className='flex items-center justify-center gap-3 text-[#536C4A] py-3'>
-        <Image
-          src='/logo-og-lab.svg'
-          alt='OG Lab logo'
-          height={38}
-        />
+        <Image src='/logo-og-lab.svg' alt='OG Lab logo' height={38} />
         <h1 className='text-3xl font-extrabold tracking-widest'>MENU</h1>
       </header>
 
       <section className='w-full max-w-[1380px] pb-6 px-4 relative'>
         <div className='grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-[2fr_2fr_1fr] gap-8'>
-          {/* Левая колонка */}
+          {/* 1 колонка */}
           <div className='space-y-8'>
-            <CategoryBlock name='TOP SHELF' rows={grouped['TOP SHELF'] ?? []} />
+            {column1.map(cat => (
+              <CategoryBlock key={cat} name={cat} rows={grouped[cat] ?? []} />
+            ))}
           </div>
 
-          {/* Центральная колонка */}
+          {/* 2 колонка */}
           <div className='space-y-8'>
-            <CategoryBlock name='MID SHELF' rows={grouped['MID SHELF'] ?? []} />
+            {column2.map(cat => (
+              <CategoryBlock key={cat} name={cat} rows={grouped[cat] ?? []} />
+            ))}
           </div>
 
-          {/* Правая колонка */}
+          {/* 3 колонка */}
           <div className='relative space-y-8 pl-6'>
-            {/* Вертикальная линия перед правой колонкой */}
             <span className='hidden lg:block absolute left-[-12px] top-0 h-full w-[3px] bg-[var(--color-primary-light)]' />
-            <CategoryBlock name='PREMIUM' rows={grouped['PREMIUM'] ?? []} />
+            {column3.map(cat => (
+              <CategoryBlock key={cat} name={cat} rows={grouped[cat] ?? []} />
+            ))}
           </div>
         </div>
       </section>
@@ -103,43 +102,40 @@ function CategoryBlock({ name, rows }: { name: string; rows: MenuRow[] }) {
       ? { label: '', keys: ['Price_1g', 'Price_5g'] }
       : { label: 'THC', keys: ['THC', 'Price_5g', 'Price_20g'] });
 
+  const priceKeys = conf.keys.filter(k => k !== 'THC' && k !== 'CBG');
+
   return (
     <div className='space-y-1'>
       {/* шапка секции */}
-      <div className='menu-section-title flex items-center'>
+      <div className='menu-section-title flex items-center bg-[#536C4A] text-white font-bold px-2 py-1 rounded-sm uppercase tracking-wide'>
         <span className='flex-1'>{name}</span>
         {conf.label && (
           <>
             <span className='w-12 text-right'>{conf.label}</span>
-            {conf.keys
-              .filter((k) => k !== 'THC' && k !== 'CBG')
-              .map((k) => (
-                <span key={k} className='w-12 text-right'>
-                  {headerLabel(k)}
-                </span>
-              ))}
+            {priceKeys.map(k => (
+              <span key={k} className='w-12 text-right'>
+                {headerLabel(k)}
+              </span>
+            ))}
           </>
         )}
       </div>
 
       {/* таблица позиций */}
-      <table className='w-full text-sm'>
+      <table className='w-full text-sm table-fixed'>
         <tbody>
           {rows.map((r) => {
             const typeKey = getTypeKey(r);
             return (
-              <tr key={r.Name} className='align-top'>
+              <tr key={r.Name} className='align-top hover:bg-[#f9f9f9] transition-colors'>
                 <td className='py-0.5 pr-2 whitespace-nowrap'>
                   {typeKey && (
-                    <span
-                      className='dot'
-                      style={{ backgroundColor: typeColor[typeKey] }}
-                    />
+                    <span className='dot' style={{ backgroundColor: typeColor[typeKey] }} />
                   )}
                   {r.Our && (
                     <Image
                       src='/leaf.svg'
-                      alt=''
+                      alt='Our farm-grown leaf icon'
                       width={12}
                       height={12}
                       className='inline mr-[2px] align-middle'
@@ -147,13 +143,11 @@ function CategoryBlock({ name, rows }: { name: string; rows: MenuRow[] }) {
                   )}
                   {r.Name}
                 </td>
-                {conf.keys
-                  .filter((k) => k !== 'THC' && k !== 'CBG')
-                  .map((k) => (
-                    <td key={k} className='py-0.5 w-12 text-right'>
-                      {r[k] ? `${r[k]}฿` : '-'}
-                    </td>
-                  ))}
+                {priceKeys.map((k) => (
+                  <td key={k} className='py-0.5 w-12 text-right'>
+                    {r[k] ? `${r[k]}฿` : '-'}
+                  </td>
+                ))}
               </tr>
             );
           })}
@@ -168,12 +162,11 @@ const Line = () => (
 );
 
 const headerLabel = (k: string) =>
-((
-  { Price_1g: '1G+', Price_5g: '5G+', Price_20g: '20G+' } as Record<
-    string,
-    string
-  >
-)[k] ?? k);
+  ({
+    Price_1g: '1G+',
+    Price_5g: '5G+',
+    Price_20g: '20G+',
+  }[k] ?? k);
 
 function LegendDot({
   color,
@@ -187,7 +180,7 @@ function LegendDot({
   return (
     <span className='flex items-center gap-1'>
       {isLeaf ? (
-        <Image src='/leaf.svg' alt='' width={12} height={12} />
+        <Image src='/leaf.svg' alt='Leaf icon' width={12} height={12} />
       ) : (
         <span className='dot' style={{ backgroundColor: color }} />
       )}
