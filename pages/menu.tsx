@@ -58,8 +58,24 @@ const MenuPage: NextPage<MenuProps> = ({ rows }) => {
         <div className='grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-[2fr_2fr_1fr] gap-8'>
           {categories.map((cat, idx) => (
             <div key={cat} className={clsx('space-y-8', idx === 2 && 'pl-6')}>
-              <CategoryBlock name={cat} rows={grouped[cat] ?? []} />
-            </div>
+              <div className='grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-[2fr_2fr_1fr] gap-8'>
+                {/* Первая колонка */}
+                <div className='space-y-8'>
+                  <CategoryBlock name={categories[0]} rows={grouped[categories[0]] ?? []} />
+                </div>
+
+                {/* Вторая колонка */}
+                <div className='space-y-8'>
+                  <CategoryBlock name={categories[1]} rows={grouped[categories[1]] ?? []} />
+                </div>
+
+                {/* Третья колонка, обёрнутая в relative-контейнер */}
+                <div className='relative space-y-8 pl-6'>
+                  {/* Вертикальная линия */}
+                  <span className='hidden lg:block absolute left-[-12px] top-0 h-full w-[3px] bg-[var(--color-primary-light)]' />
+                  <CategoryBlock name={categories[2]} rows={grouped[categories[2]] ?? []} />
+                </div>
+              </div>            </div>
           ))}
         </div>
         {/* вертикальная линия — только на больших экранах */}
@@ -161,12 +177,12 @@ const Line = () => (
 );
 
 const headerLabel = (k: string) =>
-  ((
-    { Price_1g: '1G+', Price_5g: '5G+', Price_20g: '20G+' } as Record<
-      string,
-      string
-    >
-  )[k] ?? k);
+((
+  { Price_1g: '1G+', Price_5g: '5G+', Price_20g: '20G+' } as Record<
+    string,
+    string
+  >
+)[k] ?? k);
 
 function LegendDot({
   color,
