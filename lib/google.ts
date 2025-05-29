@@ -70,7 +70,7 @@ export async function fetchMenu(): Promise<MenuRow[]> {
 
       header.forEach((key, i) => {
         const k = key.trim();
-        const v = rows[i];
+        const v = r[i];
 
         switch (k) {
           case 'Our':
