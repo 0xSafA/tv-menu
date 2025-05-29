@@ -47,7 +47,7 @@ const MenuPage: NextPage<MenuProps> = ({ rows }) => {
       </header>
 
       <section className='w-full max-w-[1380px] pb-6 px-4 relative'>
-        <div className='grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-[2fr_2fr_1fr] gap-8'>
+        <div className='grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-3 gap-8'>
           {/* 1 колонка */}
           <div className='space-y-8'>
             {column1.map(cat => (
@@ -72,6 +72,9 @@ const MenuPage: NextPage<MenuProps> = ({ rows }) => {
         </div>
       </section>
 
+      {/* нижняя полоса */}
+      <Line />
+
       {/* легенда */}
       <footer className='w-full max-w-[1380px] text-xs flex flex-wrap items-center gap-4 pb-6 px-4'>
         <LegendDot color={typeColor.hybrid} label='Hybrid' />
@@ -81,8 +84,6 @@ const MenuPage: NextPage<MenuProps> = ({ rows }) => {
         <span className='ml-auto'>Ask your budtender about a Dab Session</span>
       </footer>
 
-      {/* нижняя полоса */}
-      <Line />
     </main>
   );
 };
