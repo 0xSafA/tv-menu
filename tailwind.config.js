@@ -12,13 +12,13 @@ module.exports = {
     'sm:grid-cols-[2fr_2fr_1fr]',
     'gap-8',
   ],
-  theme: {
-    extend: {},
-      colors: {
-        primary: '#536C4A', // основной зелёный
-        accent: '#B0BF93', // светло-зелёный
+    theme: {
+        extend: {
+          colors: {
+            primary: '#536C4A',   // основной зелёный
+            accent:  '#B0BF93',   // светло-зелёный
+          },
+        },
       },
-    },
-  },
   plugins: [],
 };
