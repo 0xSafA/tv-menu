@@ -123,7 +123,7 @@ function CategoryBlock({ name, rows }: { name: string; rows: MenuRow[] }) {
       </div>
 
       {/* Таблица */}
-      <table className='w-full text-sm table-fixed'>
+      <table className='w-full text-base table-fixed'>
         <tbody>
           {rows.map((r) => {
             const typeKey = getTypeKey(r);
