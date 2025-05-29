@@ -18,17 +18,22 @@ const sheets = google.sheets({ version: 'v4', auth });
 
 /** Строка из таблицы OG Lab Menu */
 export interface MenuRow {
-  Category: string;
-  Name: string;
-  THC?: number;
-  CBG?: number;
-  Price_1pc?: number;
-  Price_1g?: number;
-  Price_5g?: number;
-  Price_20g?: number;
-  Type?: string;
-  Our?: boolean;
+  Category: string | null;
+  Name: string | null;
+  THC?: number | null;
+  CBG?: number | null;
+  Price_1pc?: number | null;
+  Price_1g?: number | null;
+  Price_5g?: number | null;
+  Price_20g?: number | null;
+  Type?: string | null;
+  Our?: boolean | null;
 }
+
+     /* --- helper: превращаем undefined в null ------------------------ */
+     function orNull<T>(v: T | undefined): T | null {
+      return v === undefined ? null : v;
+    }
 
 /** Преобразует значение TRUE/FALSE в boolean */
 function parseBoolean(value: unknown): boolean | undefined {
@@ -64,12 +69,12 @@ export async function fetchMenu(): Promise<MenuRow[]> {
       const item: Partial<MenuRow> = {};
 
       header.forEach((key, i) => {
-        const rawKey = key.trim();
-        const value = r[i];
+        const k = key.trim();
+        const v = rows[i];
 
-        switch (rawKey) {
+        switch (k) {
           case 'Our':
-            item.Our = parseBoolean(value);
+            item.Our = orNull(parseBoolean(v));
             break;
           case 'THC':
           case 'CBG':
@@ -77,12 +82,12 @@ export async function fetchMenu(): Promise<MenuRow[]> {
           case 'Price_1g':
           case 'Price_5g':
           case 'Price_20g':
-            item[rawKey as keyof MenuRow] = parseNumber(value) as never;
+            item[k as keyof MenuRow] = orNull(parseNumber(v)) as never;
             break;
           case 'Category':
           case 'Name':
           case 'Type':
-            item[rawKey as keyof MenuRow] = String(value ?? '').trim() as never;
+            item[k as keyof MenuRow] = String(v ?? '').trim() as never;
             break;
         }
       });
