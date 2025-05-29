@@ -63,7 +63,7 @@ const MenuPage: NextPage<MenuProps> = ({ rows }) => {
           ))}
         </div>
         {/* вертикальная линия — только на больших экранах */}
-        <span className='hidden lg:block absolute left-2/3 top-0 h-full w-[3px] bg-[var(--color-primary-light)]' />
+        <span className='hidden lg:block absolute left-[calc(100%*4/5)] top-0 h-full w-[3px] bg-[var(--color-primary-light)]' />
       </section>
 
       {/* легенда */}
