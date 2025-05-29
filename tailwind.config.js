@@ -1,10 +1,11 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
-    './pages/**/*.{ts,tsx}',
-    './components/**/*.{ts,tsx}',
-    './lib/**/*.{ts,tsx}',
+      './pages/**/*.{js,ts,jsx,tsx}',
+      './components/**/*.{js,ts,jsx,tsx}',
+      './lib/**/*.{js,ts,jsx,tsx}',
   ],
+  safelist: ['grid-cols-[2fr_2fr_1fr]'],
   theme: {
     extend: {
       fontFamily: {
