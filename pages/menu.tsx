@@ -80,7 +80,7 @@ const MenuPage: NextPage<MenuProps> = ({ rows }) => {
     <div className='mt-4' />
 
       {/* легенда */}
-      <footer className='mt-4 w-full max-w-[1600px] text-lg flex flex-wrap items-center gap-4 pb-6 px-4'>
+      <footer className='mt-4 w-full max-w-[1570px] text-lg flex flex-wrap items-center gap-4 pb-6 px-4'>
         <LegendDot color={typeColor.hybrid} label='Hybrid' />
         <LegendDot color={typeColor.sativa} label='Dominant Sativa' />
         <LegendDot color={typeColor.indica} label='Dominant Indica' />
@@ -165,7 +165,7 @@ function CategoryBlock({ name, rows }: { name: string; rows: MenuRow[] }) {
 }
 
 const Line = () => (
-  <div className='w-full max-w-[1600px] h-[3px] bg-[var(--color-primary-light)]' />
+  <div className='w-full max-w-[1570px] h-[3px] bg-[var(--color-primary-light)]' />
 );
 
 const headerLabel = (k: string) =>
@@ -173,7 +173,7 @@ const headerLabel = (k: string) =>
     Price_1pc: '1PC',
     Price_1g: '1G+',
     Price_5g: '5G+',
-    Price_20g: '20G',
+    Price_20g: '20G+',
   }[k] ?? k);
 
 function LegendDot({
