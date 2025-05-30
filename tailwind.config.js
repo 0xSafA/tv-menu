@@ -10,6 +10,11 @@ module.exports = {
     'grid-cols-3',
     'grid-cols-1',
     'gap-8',
+    'w-16',
+    'text-xl',
+    'h-[32px]',
+    'max-w-[1600px]',
+    'w-[1600px]', 
     { pattern: /grid-cols-\[2fr_2fr_1fr\]/, variants: ['sm', 'lg'] },
   ],
   theme: {
