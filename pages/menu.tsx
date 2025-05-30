@@ -40,7 +40,7 @@ const MenuPage: NextPage<MenuProps> = ({ rows }) => {
     <div className='mt-4' />
       {/* логотип + MENU */}
       <header className='flex items-center justify-center gap-3 text-[#536C4A] py-3'>
-        <Image src='/logo-og-lab.svg' alt='OG Lab logo' height={25} />
+        <Image src='/logo-og-lab.svg' alt='OG Lab logo' className='h-[32px] w-auto' />
         <h1 className='text-3xl font-extrabold tracking-widest'>MENU</h1>
       </header>
 
@@ -115,9 +115,9 @@ function CategoryBlock({ name, rows }: { name: string; rows: MenuRow[] }) {
       {/* Заголовок секции */}
       <div className='menu-section-title flex items-center bg-[#536C4A] text-white font-bold px-2 py-1 rounded-sm uppercase tracking-wide'>
         <span className='flex-1'>{name}</span>
-        {showTHC && <span className='w-12 text-right'>THC</span>}
+        {showTHC && <span className='w-16 text-right'>THC</span>}
         {priceKeys.map(k => (
-          <span key={k} className='w-12 text-right'>{headerLabel(k)}</span>
+          <span key={k} className='w-16 text-right'>{headerLabel(k)}</span>
         ))}
       </div>
 
@@ -144,14 +144,14 @@ function CategoryBlock({ name, rows }: { name: string; rows: MenuRow[] }) {
 
                 {/* THC */}
                 {showTHC && (
-                  <td className='py-0.5 w-12 text-right'>
+                  <td className='py-0.5 w-16 text-right'>
                     {r.THC ? `${r.THC}%` : r.CBG ? `${r.CBG}%` : '-'}
                   </td>
                 )}
 
                 {/* Цены */}
                 {priceKeys.map((k) => (
-                  <td key={k} className='py-0.5 w-12 text-right'>
+                  <td key={k} className='py-0.5 w-16 text-right'>
                     {r[k] ? `${r[k]}฿` : '-'}
                   </td>
                 ))}
@@ -165,7 +165,7 @@ function CategoryBlock({ name, rows }: { name: string; rows: MenuRow[] }) {
 }
 
 const Line = () => (
-  <div className='w-full max-w-[1380px] h-[3px] bg-[var(--color-primary-light)]' />
+  <div className='w-full max-w-[1600px] h-[3px] bg-[var(--color-primary-light)]' />
 );
 
 const headerLabel = (k: string) =>
@@ -173,7 +173,7 @@ const headerLabel = (k: string) =>
     Price_1pc: '1PC',
     Price_1g: '1G+',
     Price_5g: '5G+',
-    Price_20g: '20+',
+    Price_20g: '20G',
   }[k] ?? k);
 
 function LegendDot({
