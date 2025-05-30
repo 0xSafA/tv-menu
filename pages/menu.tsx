@@ -5,6 +5,9 @@ import Image from 'next/image';
 import { fetchMenu, MenuRow } from '@/lib/google';
 import { columnsPerCategory, groupRows } from '@/lib/menu-helpers';
 
+import { useEffect } from 'react';
+
+
 /* ───────────────────────────── types ─────────────────────────── */
 interface MenuProps {
   rows: MenuRow[];
@@ -33,6 +36,14 @@ const column3 = ['FRESH FROZEN HASH', 'LIVE HASH ROSIN', 'DRY SIFT HASH', 'ICE B
 /* ───────────── страница меню ───────────── */
 const MenuPage: NextPage<MenuProps> = ({ rows }) => {
   const grouped = groupRows(rows);
+
+  useEffect(() => {
+  const interval = setInterval(() => {
+    window.location.reload();
+  }, 60000); // каждые 60 секунд
+
+  return () => clearInterval(interval);
+}, []);
 
   return (
     <main className='min-h-screen flex flex-col items-center font-[Inter] text-neutral-900 bg-white'>
