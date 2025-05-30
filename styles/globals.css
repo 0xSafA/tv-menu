@@ -13,8 +13,6 @@
 html,
 body {
   @apply font-sans text-primary antialiased;
-  @apply text-lg; 
-
 }
 
 h1,
