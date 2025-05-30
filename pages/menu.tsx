@@ -27,7 +27,7 @@ const getTypeKey = (row: MenuRow): KnownType | null => {
 
 /* ───────────── категории по колонкам ───────────── */
 const column1 = ['TOP SHELF', 'MID SHELF'];
-const column2 = ['PREMIUM', 'SMALLS', 'CBG', 'PRE ROLLS', 'PIATELLA'];
+const column2 = ['PREMIUM', 'SMALLS', 'CBG', 'PRE ROLLS'];
 const column3 = ['FRESH FROZEN HASH', 'LIVE HASH ROSIN', 'DRY SIFT HASH', 'ICE BUBBLE HASH'];
 
 /* ───────────── страница меню ───────────── */
@@ -40,14 +40,14 @@ const MenuPage: NextPage<MenuProps> = ({ rows }) => {
     <div className='mt-4' />
       {/* логотип + MENU */}
       <header className='flex items-center justify-center gap-3 text-[#536C4A] py-3'>
-        <Image src='/logo-og-lab.svg' alt='OG Lab logo' height={30} />
+        <Image src='/logo-og-lab.svg' alt='OG Lab logo' height={25} />
         <h1 className='text-3xl font-extrabold tracking-widest'>MENU</h1>
       </header>
 
        <Line />
     <div className='mt-4' />
 
-      <section className='w-full max-w-[1380px] pb-6 px-4 relative'>
+      <section className='w-full max-w-[1600px] pb-6 px-4 relative'>
         <div className='grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-3 gap-8'>
           {/* 1 колонка */}
           <div className='space-y-8'>
@@ -80,12 +80,12 @@ const MenuPage: NextPage<MenuProps> = ({ rows }) => {
     <div className='mt-4' />
 
       {/* легенда */}
-      <footer className='mt-4 w-full max-w-[1380px] text-xs flex flex-wrap items-center gap-4 pb-6 px-4'>
+      <footer className='mt-4 w-full max-w-[1600px] text-lg flex flex-wrap items-center gap-4 pb-6 px-4'>
         <LegendDot color={typeColor.hybrid} label='Hybrid' />
         <LegendDot color={typeColor.sativa} label='Dominant Sativa' />
         <LegendDot color={typeColor.indica} label='Dominant Indica' />
         <LegendDot color='#536C4A' label='Our farm-grown' isLeaf />
-        <span className='ml-auto'>Ask your budtender about a Dab Session</span>
+        <span className='ml-auto text-xl'>Ask your budtender about a Dab Session</span>
       </footer>
     </main>
   );
