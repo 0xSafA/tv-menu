@@ -15,13 +15,17 @@ module.exports = {
     'h-[32px]',
     'max-w-[1600px]',
     'w-[1600px]', 
-    { pattern: /grid-cols-\[2fr_2fr_1fr\]/, variants: ['sm', 'lg'] },
-  ],
+    ],
   theme: {
     extend: {
+      backgroundImage: {
+    'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+    'gradient-conic':
+    'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+       },
       colors: {
-        primary: '#536C4A', // основной зелёный
-        accent: '#B0BF93', // светло-зелёный
+        primary: '#536C4A', 
+        accent: '#B0BF93', 
       },
       keyframes: {
     smokeRise: {
