@@ -32,6 +32,12 @@ h3 {
 }
 .smoke-wisp {
   @apply absolute bottom-[-96px] w-[220px] h-[220px] rounded-full
-         bg-gradient-radial from-primary/30 via-primary/5 to-transparent
+          from-primary/30 via-primary/5 to-transparent
          blur-3xl opacity-0 animate-smokeRise;
+    background-image: radial-gradient(
+    circle,
+    rgb(83 108 74 / 0.30) 0%,
+    rgb(83 108 74 / 0.05) 45%,
+    transparent 70%
+  );
 }
