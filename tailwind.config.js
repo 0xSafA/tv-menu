@@ -33,9 +33,19 @@ module.exports = {
       '50%':  { opacity: 0.6 },
       '100%': { transform: 'translateY(-160%) scale(1.4)', opacity: 0 },
     },
+    breath: {
+  '0%,100%': { transform: 'scale(1)', opacity: 0.8 },
+  '50%':     { transform: 'scale(1.35)', opacity: 1 },
+},
+breathLeaf: {
+  '0%,100%': { transform: 'scale(1) rotate(0deg)', opacity: 0.8 },
+  '50%':     { transform: 'scale(1.25) rotate(-8deg)', opacity: 1 },
+},
   },
   animation: {
     smokeRise: 'smokeRise 18s linear forwards',   // 1 «подъём» ≈18 сек
+    breath: 'breath 1.8s ease-in-out infinite',
+breathLeaf: 'breathLeaf 1.8s ease-in-out infinite',
   },
   
     },

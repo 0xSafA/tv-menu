@@ -1,9 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:wght@700&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-/* Подключаем Google-шрифты */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:wght@700&display=swap');
 
 :root {
   --color-primary: #536C4A;
@@ -32,7 +30,6 @@ h3 {
 }
 .smoke-wisp {
   @apply absolute bottom-[-96px] w-[220px] h-[220px] rounded-full
-          from-primary/30 via-primary/5 to-transparent
          blur-3xl opacity-0 animate-smokeRise;
     background-image: radial-gradient(
     circle,
