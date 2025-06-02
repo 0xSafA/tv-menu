@@ -25,3 +25,13 @@ h3 {
 .dot {
   @apply inline-block w-2 h-2 rounded-full mr-1 align-middle;
 }
+
+/* — дымовой “клубок” и контейнер — */
+.smoke-container {
+  @apply pointer-events-none fixed bottom-0 left-0 w-full h-64 z-40 overflow-visible;
+}
+.smoke-wisp {
+  @apply absolute bottom-[-96px] w-[220px] h-[220px] rounded-full
+         bg-gradient-radial from-primary/30 via-primary/5 to-transparent
+         blur-3xl opacity-0 animate-smokeRise;
+}

@@ -1,11 +1,10 @@
 // pages/menu.tsx
 import type { GetStaticProps, NextPage } from 'next';
 import Image from 'next/image';
-
 import { fetchMenu, MenuRow } from '@/lib/google';
 import { columnsPerCategory, groupRows } from '@/lib/menu-helpers';
-
 import { useEffect } from 'react';
+import Smoke from '@/components/smoke';
 
 
 /* ───────────────────────────── types ─────────────────────────── */
@@ -40,7 +39,7 @@ const MenuPage: NextPage<MenuProps> = ({ rows }) => {
   useEffect(() => {
   const interval = setInterval(() => {
     window.location.reload();
-  }, 60000); // каждые 60 секунд
+  }, 600000); // каждые 600 секунд (10 минут)
 
   return () => clearInterval(interval);
 }, []);
@@ -98,6 +97,7 @@ const MenuPage: NextPage<MenuProps> = ({ rows }) => {
         <LegendDot color='#536C4A' label='Our farm-grown' isLeaf />
         <span className='ml-auto text-xl'>Ask your budtender about a Dab Session</span>
       </footer>
+      <Smoke /> 
     </main>
   );
 };
@@ -186,6 +186,8 @@ const headerLabel = (k: string) =>
     Price_5g: '5G+',
     Price_20g: '20G+',
   }[k] ?? k);
+
+
 
 function LegendDot({
   color,

@@ -16,7 +16,8 @@ pids
 *.seed
 *.pid.lock
 
-
+# Misc
+.DS_Store
 package-lock.json 
 service-key.pem
 og-lab-menu-6b341a0c1681.json

@@ -23,6 +23,16 @@ module.exports = {
         primary: '#536C4A', // основной зелёный
         accent: '#B0BF93', // светло-зелёный
       },
+      keyframes: {
+    smokeRise: {
+      '0%':   { transform: 'translateY(0) scale(0.8)', opacity: 0.4 },
+      '50%':  { opacity: 0.6 },
+      '100%': { transform: 'translateY(-160%) scale(1.4)', opacity: 0 },
+    },
+  },
+  animation: {
+    smokeRise: 'smokeRise 18s linear forwards',   // 1 «подъём» ≈18 сек
+  },
   
     },
   },
