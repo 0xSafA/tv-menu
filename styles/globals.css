@@ -24,17 +24,19 @@ h3 {
   @apply inline-block w-2 h-2 rounded-full mr-1 align-middle;
 }
 
-/* — дымовой “клубок” и контейнер — */
-.smoke-container {
-  @apply pointer-events-none fixed bottom-0 left-0 w-full h-64 z-40 overflow-visible;
+/* — дымовой “клубок” и контейнер — @apply absolute bottom-[-48px] w-[260px] h-[260px] rounded-full
+         blur-3xl opacity-0 animate-smokeRise; */
+.smoke-container{
+  @apply pointer-events-none fixed bottom-0 left-0 w-full h-64 overflow-visible z-[999];
 }
-.smoke-wisp {
-  @apply absolute bottom-[-96px] w-[220px] h-[220px] rounded-full
-         blur-3xl opacity-0 animate-smokeRise;
-    background-image: radial-gradient(
-    circle,
-    rgb(83 108 74 / 0.30) 0%,
-    rgb(83 108 74 / 0.05) 45%,
-    transparent 70%
-  );
+
+.smoke-wisp{
+  @apply absolute bottom-[-40px] w-[240px] h-[240px] rounded-full
+         blur-md opacity-0 animate-smokeRise;
+  background-image:radial-gradient(
+      circle,
+      rgba(83,108,74,.55) 0%,
+      rgba(83,108,74,.25) 35%,
+      transparent 75%);
+  mix-blend-mode:multiply;
 }
