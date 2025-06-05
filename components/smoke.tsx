@@ -2,19 +2,19 @@
 'use client';
 import { useEffect, useState } from 'react';
 
-interface Wisp { id:number; x:number; delay:number; }
+interface Wisp { id: number; x: number; delay: number; }
 
 export default function Smoke() {
   const [wisps, setWisps] = useState<Wisp[]>([]);
 
   const spawn = () => {
-    const count = 2 + Math.floor(Math.random()*2);      // 2–3 струйки
-    const now   = Date.now();
+    const count = 2 + Math.floor(Math.random() * 2);      // 2–3 струйки
+    const now = Date.now();
     setWisps(
       Array.from({ length: count }, (_, i) => ({
         id: now + i,
-        x: Math.random()*100,            // % от ширины экрана
-        delay: Math.random()*4           // старт в первые 4 с
+        x: Math.random() * 100,            // % от ширины экрана
+        delay: Math.random() * 4           // старт в первые 4 с
       }))
     );
   };
@@ -32,7 +32,9 @@ export default function Smoke() {
           key={w.id}
           style={{
             left: `${w.x}%`,
-            animationDelay: `${w.delay}s`
+            animationDelay: `${w.delay}s`,
+            width: `${8 + Math.random() * 6}px`,    // 8-14 px
+            transform: `rotate(${(Math.random() * 6 - 3).toFixed(2)}deg)`, // -3°…+3°
           }}
           className="smoke-wisp"
         />

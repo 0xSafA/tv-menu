@@ -24,29 +24,22 @@ h3 {
   @apply inline-block w-2 h-2 rounded-full mr-1 align-middle;
 }
 
-.smoke-container{
-  @apply pointer-events-none fixed bottom-0 left-0 w-full h-[400px]
-         overflow-visible z-[999];
+.smoke-container {
+  @apply pointer-events-none fixed bottom-0 left-0 w-full h-[500px] overflow-visible z-[999];
 }
 
 .smoke-wisp{
-  /* узкая вертикальная лента */
-  @apply absolute bottom-0 w-[12px] h-[300px] rounded-full
-         opacity-0 blur-md
-         animate-smokeStream;
+  @apply absolute bottom-0 w-[16px] h-[460px] rounded-full
+         opacity-0 blur-[14px] animate-smokeRise;
 
-  /* серо-зелёный сглаженный градиент */
+  /* вертикальный градиент ↓   (чуть темнее в середине) */
   background-image: linear-gradient(
-    to right,
-    rgba(83,108,74,0)   0%,
-    rgba(83,108,74,0.35)45%,
-    rgba(83,108,74,0.5) 50%,
-    rgba(83,108,74,0.35)55%,
-    rgba(83,108,74,0)  100%
-  );
-  mix-blend-mode: multiply;         /* опционально */
-
-  /* горизонтальное покачивание */
-  animation: smokeStream 12s linear forwards,
-             smokeSway   3s  ease-in-out infinite;
+      to bottom,
+      rgba(255,255,255,0)     5%,
+      rgba(56, 81, 74, 0.75)  25%,
+      rgb(95, 119, 127)  70%,
+      rgba(104, 112, 130, 0.75)  85%,
+      rgba(55, 53, 53, 0)   100%);
+  /* простое наложение— без screen, чтобы лучше читался */
+  mix-blend-mode: normal;
 }

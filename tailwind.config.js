@@ -1,4 +1,3 @@
-// tailwind.config.js
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
@@ -13,9 +12,9 @@ module.exports = {
   ],
   theme: {
     extend: {
-      /* ------------------------------------------------ */
-      /* не-анимационные расширения                      */
-      /* ------------------------------------------------ */
+      /* ──────────────────────────────── */
+      /* цвета, фоны                     */
+      /* ──────────────────────────────── */
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-conic' :
@@ -26,35 +25,30 @@ module.exports = {
         accent : '#B0BF93',
       },
 
-      /* ------------------------------------------------ */
-      /*   ↓ здесь keyframes и animation (без второго    */
-      /*     вложенного extend!)                         */
-      /* ------------------------------------------------ */
+      /* ──────────────────────────────── */
+      /* анимации дыма                    */
+      /* ──────────────────────────────── */
       keyframes: {
-        smokeStream: {
-          '0%'  : { transform: 'translateY(0)   rotate(0deg)', opacity: 0   },
-          '10%' : { opacity: 0.7 },
-          '90%' : { opacity: 0.4 },
-          '100%': { transform: 'translateY(-160%) rotate(3deg)', opacity: 0 }
-        },
-        smokeSway: {
-          '0%,100%': { transform: 'translateX(0)'  },
-          '50%'    : { transform: 'translateX(6px)' },
+        smokeRise: {
+          '0%'  : { transform: 'translateY(0)   translateX(0)   rotate(0deg)', opacity: 0 },
+          '10%' : { opacity: .9 },
+          '35%' : { transform: 'translateY(-40%) translateX(4px)  rotate(2deg)' },
+          '70%' : { transform: 'translateY(-120%) translateX(-6px) rotate(-2deg)', opacity: .5 },
+          '100%': { transform: 'translateY(-220%) translateX(3px)  rotate(1deg)',  opacity: 0 },
         },
         breath: {
-          '0%,100%': { transform: 'scale(1)',           opacity: 0.8 },
-          '50%'    : { transform: 'scale(1.35)',        opacity: 1   },
+          '0%,100%': { transform: 'scale(1)',           opacity: .8 },
+          '50%'    : { transform: 'scale(1.35)',        opacity: 1  },
         },
         breathLeaf: {
-          '0%,100%': { transform: 'scale(1)   rotate(0deg)',  opacity: 0.8 },
-          '50%'    : { transform: 'scale(1.25) rotate(-8deg)', opacity: 1   },
+          '0%,100%': { transform: 'scale(1) rotate(0deg)',  opacity: .8 },
+          '50%'    : { transform: 'scale(1.25) rotate(-8deg)', opacity: 1 },
         },
       },
       animation: {
-        smokeStream: 'smokeStream 12s linear forwards',
-        smokeSway  : 'smokeSway 3s ease-in-out infinite',
-        breath     : 'breath 1.8s ease-in-out infinite',
-        breathLeaf : 'breathLeaf 1.8s ease-in-out infinite',
+        smokeRise : 'smokeRise 14s linear forwards',
+        breath    : 'breath 1.8s ease-in-out infinite',
+        breathLeaf: 'breathLeaf 1.8s ease-in-out infinite',
       },
     },
   },
