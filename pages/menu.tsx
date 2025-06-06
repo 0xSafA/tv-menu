@@ -91,9 +91,9 @@ const MenuPage: NextPage<MenuProps> = ({ rows }) => {
 
       {/* легенда */}
       <footer className='mt-4 w-full max-w-[1570px] text-lg flex flex-wrap items-center gap-4 pb-6 px-4'>
-        <LegendDot color={typeColor.hybrid} label='Hybrid' />
-        <LegendDot color={typeColor.sativa} label='Dominant Sativa' />
-        <LegendDot color={typeColor.indica} label='Dominant Indica' />
+        <LegendDot color={typeColor.hybrid} label='Hybrid' dataColor='hybrid' />
+        <LegendDot color={typeColor.sativa} label='Dominant Sativa' dataColor='sativa' />
+        <LegendDot color={typeColor.indica} label='Dominant Indica' dataColor='indica' />
         <LegendDot color='#536C4A' label='Our farm-grown' isLeaf />
         <span className='ml-auto text-xl'>Ask your budtender about a Dab Session</span>
       </footer>
@@ -200,17 +200,30 @@ function LegendDot({
   color,
   label,
   isLeaf,
+  dataColor,
 }: {
   color: string;
   label: string;
   isLeaf?: boolean;
+  dataColor?: string;
 }) {
   return (
     <span className='flex items-center gap-1'>
       {isLeaf ? (
-        <Image src='/leaf.svg' alt='Leaf icon' width={12} height={12} />
+        <Image
+          src='/leaf.svg'
+          alt='Leaf icon'
+          width={12}
+          height={12}
+          className='leaf'
+          data-color='leaf'
+        />
       ) : (
-        <span className='dot' style={{ backgroundColor: color }} />
+        <span
+          className='dot'
+          data-color={dataColor}
+          style={{ backgroundColor: color }}
+        />
       )}
       {label}
     </span>
