@@ -31,6 +31,23 @@ module.exports = {
       /* анимации дыма                    */
       /* ──────────────────────────────── */
       keyframes: {
+        /* Жевание: рот открывается/закрывается */
+    pacChomp: {
+      '0%,100%': { clipPath: 'polygon(50% 50%,100% 0,100% 100%)' },
+      '50%'    : { clipPath: 'polygon(50% 50%,100% 40%,100% 60%)' },
+    },
+    /* Путь в форме «─ then │» */
+    pacPath: ({ theme }) => ({
+      /* ① старт вне экрана слева  */
+      '0%'  : { transform: 'translate(-40px, 0)' },
+      /* ② прибежал к началу вертикальной линии */
+      /*   bottom-line длиной 1570 px; vertical-line стоит на х = 111% of page */
+      '60%' : { transform: 'translate(calc(1570px - 40px), 0)' },
+      /* небольшая задержка перед поворотом */
+      '65%' : { transform: 'translate(calc(1570px - 40px), 0) rotate(0deg)' },
+      /* ③ карабкается вверх по вертикали (высота ≈ 900 px) */
+      '100%': { transform: 'translate(calc(1570px - 40px), -900px) rotate(-90deg)' },
+    }),
         breath: {
           '0%,100%': { transform: 'scale(1)',           opacity: .8 },
           '50%'    : { transform: 'scale(1.35)',        opacity: 1  },
@@ -43,6 +60,8 @@ module.exports = {
       animation: {
         breath    : 'breath 1.8s ease-in-out infinite',
         breathLeaf: 'breathLeaf 1.8s ease-in-out infinite',
+        pacChomp: 'pacChomp .3s linear infinite',
+    pacPath : 'pacPath 14s linear infinite',
       },
     },
   },

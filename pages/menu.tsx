@@ -5,6 +5,7 @@ import { fetchMenu, MenuRow } from '@/lib/google';
 import { columnsPerCategory, groupRows } from '@/lib/menu-helpers';
 import { useEffect } from 'react';
 import PulseController from '@/components/PulseController';
+import PacMan from '@/components/PacMan';
 
 
 /* ───────────────────────────── types ─────────────────────────── */
