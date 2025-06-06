@@ -1,3 +1,5 @@
+/*globals.css */
+
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:wght@700&display=swap');
 @tailwind base;
 @tailwind components;
@@ -24,22 +26,10 @@ h3 {
   @apply inline-block w-2 h-2 rounded-full mr-1 align-middle;
 }
 
-.smoke-container {
-  @apply pointer-events-none fixed bottom-0 left-0 w-full h-[500px] overflow-visible z-[999];
-}
-
-.smoke-wisp{
-  @apply absolute bottom-0 w-[16px] h-[460px] rounded-full
-         opacity-0 blur-[14px] animate-smokeRise;
-
-  /* вертикальный градиент ↓   (чуть темнее в середине) */
-  background-image: linear-gradient(
-      to bottom,
-      rgba(255,255,255,0)     5%,
-      rgba(56, 81, 74, 0.75)  25%,
-      rgb(95, 119, 127)  70%,
-      rgba(104, 112, 130, 0.75)  85%,
-      rgba(55, 53, 53, 0)   100%);
-  /* простое наложение— без screen, чтобы лучше читался */
-  mix-blend-mode: normal;
+/* ─── точки/листики дышат, когда их цвет активен ─── */
+body[data-active='hybrid']  .dot[data-color='hybrid'],
+body[data-active='sativa']  .dot[data-color='sativa'],
+body[data-active='indica']  .dot[data-color='indica'],
+body[data-active='leaf']    [data-color='leaf'] {
+  @apply animate-breath;
 }

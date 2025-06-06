@@ -4,7 +4,8 @@ import Image from 'next/image';
 import { fetchMenu, MenuRow } from '@/lib/google';
 import { columnsPerCategory, groupRows } from '@/lib/menu-helpers';
 import { useEffect } from 'react';
-import Smoke from '@/components/smoke';
+import PulseController from '@/components/PulseController';
+
 
 
 /* ───────────────────────────── types ─────────────────────────── */
@@ -49,6 +50,7 @@ const MenuPage: NextPage<MenuProps> = ({ rows }) => {
 
       <div className='mt-4' />
       {/* логотип + MENU */}
+       <PulseController />
       <header className='flex items-center justify-center gap-3 text-[#536C4A] py-3'>
         <Image src='/logo-og-lab.svg' alt='OG Lab logo' width={100.3} height={29} />
         <h1 className='text-3xl font-extrabold tracking-widest'>MENU</h1>
@@ -95,9 +97,9 @@ const MenuPage: NextPage<MenuProps> = ({ rows }) => {
         <LegendDot color={typeColor.sativa} label='Dominant Sativa' dataColor='sativa' />
         <LegendDot color={typeColor.indica} label='Dominant Indica' dataColor='indica' />
         <LegendDot color='#536C4A' label='Our farm-grown' isLeaf />
+        <span className='ml-auto text-xl'>We sell weed strating from 5 grams.</span>
         <span className='ml-auto text-xl'>Ask your budtender about a Dab Session</span>
       </footer>
-      <Smoke />
     </main>
   );
 };

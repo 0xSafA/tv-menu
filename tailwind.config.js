@@ -1,3 +1,5 @@
+/* tailwind.config.js*/
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
@@ -29,13 +31,6 @@ module.exports = {
       /* анимации дыма                    */
       /* ──────────────────────────────── */
       keyframes: {
-        smokeRise: {
-          '0%'  : { transform: 'translateY(0)   translateX(0)   rotate(0deg)', opacity: 0 },
-          '10%' : { opacity: .9 },
-          '35%' : { transform: 'translateY(-40%) translateX(4px)  rotate(2deg)' },
-          '70%' : { transform: 'translateY(-120%) translateX(-6px) rotate(-2deg)', opacity: .5 },
-          '100%': { transform: 'translateY(-220%) translateX(3px)  rotate(1deg)',  opacity: 0 },
-        },
         breath: {
           '0%,100%': { transform: 'scale(1)',           opacity: .8 },
           '50%'    : { transform: 'scale(1.35)',        opacity: 1  },
@@ -46,7 +41,6 @@ module.exports = {
         },
       },
       animation: {
-        smokeRise : 'smokeRise 14s linear forwards',
         breath    : 'breath 1.8s ease-in-out infinite',
         breathLeaf: 'breathLeaf 1.8s ease-in-out infinite',
       },
