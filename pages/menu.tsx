@@ -87,6 +87,8 @@ const MenuPage: NextPage<MenuProps> = ({ rows }) => {
         </div>
       </section>
 
+    <PacMan />
+
       {/* нижняя полоса */}
       <Line />
       <div className='mt-4' />

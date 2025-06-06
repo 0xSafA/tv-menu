@@ -35,10 +35,11 @@ body[data-active='leaf']    [data-color='leaf'] {
 }
 
 /* «Г»-маршрут начинается внизу слева */
-.pacman {
-  @apply fixed bottom-[14px] left-0    /* 14 px → ровно по центру 3-px линии */
-         z-[1000] pointer-events-none
-         animate-pacChomp animate-pacPath;
-  /* чуть сгладим края */
-  filter: drop-shadow(0 0 3px rgba(255,255,0,.6));
+@layer utilities {
+  .pacman {
+    @apply fixed bottom-[120px] left-0
+           z-[1000] pointer-events-none
+           animate-pacChomp animate-pacPath;
+    filter: drop-shadow(0 0 3px rgba(255,255,0,.6));
+  }
 }
