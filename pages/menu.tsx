@@ -7,7 +7,6 @@ import { useEffect } from 'react';
 import PulseController from '@/components/PulseController';
 
 
-
 /* ───────────────────────────── types ─────────────────────────── */
 interface MenuProps {
   rows: MenuRow[];
@@ -97,8 +96,8 @@ const MenuPage: NextPage<MenuProps> = ({ rows }) => {
         <LegendDot color={typeColor.sativa} label='Dominant Sativa' dataColor='sativa' />
         <LegendDot color={typeColor.indica} label='Dominant Indica' dataColor='indica' />
         <LegendDot color='#536C4A' label='Our farm-grown' isLeaf />
-        <span className='ml-auto text-xl'>We sell weed strating from 5 grams.</span>
-        <span className='ml-auto text-xl'>Ask your budtender about a Dab Session</span>
+        <span className='ml-auto text-lg'>Weed (with batches from 5g)</span>
+        <span className='ml-auto text-lg'>Ask your budtender about a Dab Session</span>
       </footer>
     </main>
   );
