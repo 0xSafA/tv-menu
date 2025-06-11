@@ -22,10 +22,18 @@ module.exports = {
       },
       keyframes: {
         pacPath: {
-          '0%': { transform: 'translate(-40px,0)' },
-          '60%': { transform: 'translate(calc(1100px - 40px),0)' },
-          '65%': { transform: 'translate(calc(1100px - 40px),0) rotate(90deg)' },
-          '100%': { transform: 'translate(calc(1100px - 40px),-900px) rotate(-90deg)' },
+          '0%': {
+            transform: 'translate(-40px, 0) rotate(0deg)', // ← движется вправо
+          },
+          '60%': {
+            transform: 'translate(calc(1100px - 40px), 0) rotate(0deg)', // всё ещё вправо
+          },
+          '65%': {
+            transform: 'translate(calc(1100px - 40px), 0) rotate(-90deg)', // поворот вверх
+          },
+          '100%': {
+            transform: 'translate(calc(1100px - 40px), -900px) rotate(-90deg)', // вверх
+          },
         },
         breath: {
           '0%,100%': { transform: 'scale(1)', opacity: 0.8 },
@@ -35,9 +43,22 @@ module.exports = {
           '0%,100%': { transform: 'scale(1) rotate(0deg)', opacity: 0.8 },
           '50%': { transform: 'scale(1.25) rotate(-8deg)', opacity: 1 },
         },
+
+        pacFade: {
+          '0%, 45%': { opacity: 1 },
+                    '0%, 65%': { opacity: 1 },
+
+          '70%': { opacity: 0.5 },
+          '75%, 85%': { opacity: 0 },
+          '90%': { opacity: 0.5 },
+          '100%': { opacity: 1 },
+        },
       },
       animation: {
-        pacPath: 'pacPath 20s ease-in-out infinite',
+        pacPath: 'pacPath 40s ease-in-out infinite',
+        pacFade: 'pacFade 30s linear infinite',
+        pacPathFade: 'pacPath 40s ease-in-out infinite, pacFade 30s linear infinite',
+
         breath: 'breath 1.8s ease-in-out infinite',
         breathLeaf: 'breathLeaf 1.8s ease-in-out infinite',
       },
