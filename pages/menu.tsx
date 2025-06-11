@@ -182,6 +182,32 @@ function CategoryBlock({ name, rows }: { name: string; rows: MenuRow[] }) {
           })}
         </tbody>
       </table>
+      
+      <svg
+  className="fixed w-16 h-16 bottom-[120px] left-0 z-[1000] pointer-events-none animate-pacPath"
+  viewBox="0 0 100 100"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <defs>
+    <mask id="mouth">
+      <rect width="100" height="100" fill="white" />
+      <path>
+        <animate
+          attributeName="d"
+          dur="0.3s"
+          repeatCount="indefinite"
+          values="
+            M50,50 L100,30 A50,50 0 1,1 100,70 Z;
+            M50,50 L100,48 A50,50 0 1,1 100,52 Z;
+            M50,50 L100,30 A50,50 0 1,1 100,70 Z"
+        />
+        <animate attributeName="fill" values="black;black;black" dur="0.3s" repeatCount="indefinite" />
+      </path>
+    </mask>
+  </defs>
+
+  <circle cx="50" cy="50" r="50" fill="yellow" mask="url(#mouth)" />
+</svg>
     </div>
   );
 }

@@ -36,22 +36,3 @@ body[data-active='leaf']    [data-color='leaf'] {
   @apply animate-breath;
 }
 
-/* «Г»-маршрут начинается внизу слева */
-/* @layer utilities {
-  .pacman {
-    @apply fixed bottom-[120px] left-0
-           z-[1000] pointer-events-none
-           animate-pacChomp animate-pacPath;
-    filter: drop-shadow(0 0 3px rgba(255,255,0,.6));
-  }
-} */
-
-@layer utilities {
-.pacman {
-  @apply fixed w-16 h-16 bottom-[120px] left-0 z-[1000] pointer-events-none animate-pacChomp animate-pacPath;
-  background-color: yellow;
-  border-radius: 50%;
-  filter: drop-shadow(0 0 3px rgba(255,255,0,.6));
-  clip-path: polygon(50% 50%, 100% 35%, 100% 65%);
-}
-}
