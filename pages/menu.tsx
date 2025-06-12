@@ -102,6 +102,7 @@ const MenuPage: NextPage<MenuProps> = ({ rows }) => {
         <span className='ml-auto text-lg'>Weed (with batches from 5g)</span>
         <span className='ml-auto text-lg'>Ask your budtender about a Dab Session</span>
       </footer>
+       <PacmanTrail />
     </main>
   );
 };
@@ -135,6 +136,7 @@ function CategoryBlock({ name, rows }: { name: string; rows: MenuRow[] }) {
           <span key={k} className='w-16 text-right'>{headerLabel(k)}</span>
         ))}
       </div>
+
 
       {/* Таблица */}
       <table className='w-full text-base table-fixed'>
@@ -182,8 +184,6 @@ function CategoryBlock({ name, rows }: { name: string; rows: MenuRow[] }) {
           })}
         </tbody>
       </table>
-   
- <PacmanTrail />
 
 
     </div>

@@ -8,13 +8,14 @@ module.exports = {
   ],
   safelist: [
     'grid', 'grid-cols-3', 'grid-cols-1', 'gap-8',
-    'w-16', 'text-xl', 'h-[32px]', 'max-w-[1600px]', 'w-[1600px]',
+    'w-16', 'w-[60px]', 'text-xl', 'h-[32px]', 'max-w-[1600px]', 'w-[1600px]',
   ],
   theme: {
     extend: {
       transitionProperty: {
       'transform': 'transform',
       'opacity': 'opacity',
+      'all': 'all',
     },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
