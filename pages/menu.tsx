@@ -51,7 +51,7 @@ const MenuPage: NextPage<MenuProps> = ({ rows }) => {
 
       <div className='mt-4' />
       {/* логотип + MENU */}
-       <PulseController />
+      <PulseController />
       <header className='flex items-center justify-center gap-3 text-[#536C4A] py-3'>
         <Image src='/logo-og-lab.svg' alt='OG Lab logo' width={100.3} height={29} />
         <h1 className='text-3xl font-extrabold tracking-widest'>MENU</h1>
@@ -102,7 +102,7 @@ const MenuPage: NextPage<MenuProps> = ({ rows }) => {
         <span className='ml-auto text-lg'>Weed (with batches from 5g)</span>
         <span className='ml-auto text-lg'>Ask your budtender about a Dab Session</span>
       </footer>
-       <PacmanTrail />
+      <PacmanTrail />
     </main>
   );
 };
@@ -145,7 +145,7 @@ function CategoryBlock({ name, rows }: { name: string; rows: MenuRow[] }) {
             const typeKey = getTypeKey(r);
             return (
               <tr key={r.Name} className='align-top hover:bg-[#f9f9f9] transition-colors'>
-                <td className='py-0.5 pr-2 whitespace-nowrap'>
+                <td className='py-0.5 pr-2 break-words max-w-[260px] align-top'>
                   {typeKey && (
                     <span
                       className='dot'
