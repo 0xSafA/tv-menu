@@ -5,6 +5,8 @@ import { fetchMenu, MenuRow } from '@/lib/google';
 import { columnsPerCategory, groupRows } from '@/lib/menu-helpers';
 import { useEffect } from 'react';
 import PulseController from '@/components/PulseController';
+import PacmanTrail from '@/components/PacmanTrail';
+
 
 
 /* ───────────────────────────── types ─────────────────────────── */
@@ -180,35 +182,8 @@ function CategoryBlock({ name, rows }: { name: string; rows: MenuRow[] }) {
           })}
         </tbody>
       </table>
-      
-
-<svg
-  className="fixed w-12 h-12 bottom-[40px] left-0 z-[1000] pointer-events-none animate-pacPathFade"
-  viewBox="0 0 100 100"
-  xmlns="http://www.w3.org/2000/svg"
->
-  <defs>
-    <mask id="mouth">
-      <rect width="100" height="100" fill="white" />
-      <path>
-        <animate
-          attributeName="d"
-          dur="0.6s"
-          repeatCount="indefinite"
-          values="
-            M50,50 L100,30 A50,50 0 1,1 100,70 Z;
-            M50,50 L100,48 A50,50 0 1,1 100,52 Z;
-            M50,50 L100,30 A50,50 0 1,1 100,70 Z"
-        />
-        <animate attributeName="fill" values="black;black;black" dur="0.6s" repeatCount="indefinite" />
-      </path>
-    </mask>
-  </defs>
-
-  <circle cx="50" cy="50" r="50" fill="#B0BF93" mask="url(#mouth)" />
-
-  <circle cx="43" cy="22" r="8" fill="#536C4A" />
-</svg>
+   
+ <PacmanTrail />
 
 
     </div>
