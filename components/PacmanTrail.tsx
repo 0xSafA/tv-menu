@@ -102,7 +102,7 @@ export default function PacmanTrail() {
           </mask>
         </defs>
         <circle cx="50" cy="50" r="50" fill="#B0BF93" mask="url(#mouth)" />
-        <circle cx="43" cy="22" r="8" fill="#536C4A" />
+        <circle cx="40" cy="26" r="9" fill="#536C4A" />
       </svg>
     </>
   );
