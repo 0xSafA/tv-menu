@@ -36,3 +36,9 @@ body[data-active='leaf']    [data-color='leaf'] {
   @apply animate-breath;
 }
 
+.transition-transform {
+  transition: transform 0.5s ease-in-out;
+}
+.transition-opacity {
+  transition: opacity 0.5s ease-out;
+}

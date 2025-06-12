@@ -1,65 +1,82 @@
-'use client';
+import { useEffect, useRef, useState } from 'react';
 
-import { useEffect } from 'react';
+// Настройки
+const TRAIL_LENGTH = 100; // 👈 длина следа
+const MOVE_INTERVAL = 80; // 👈 скорость движения (мс)
+const FADE_DURATION = 2000; // 👈 затухание следа (мс)
+const STEP_SIZE = 8;
+const DIRECTIONS = [
+  { x: 1, y: 0 },   // вправо
+  { x: 0, y: 1 },   // вниз
+  { x: -1, y: 0 },  // влево
+  { x: 0, y: -1 },  // вверх
+];
 
-export default function PacmanTrail() {
+export default function PacmanWithTrail() {
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [angle, setAngle] = useState(0);
+  const [trail, setTrail] = useState<{ x: number; y: number; time: number }[]>([]);
+  const containerRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
-    const pacman = document.querySelector('.pacman') as HTMLElement | null;
-    const trail = document.querySelector('.pacman-trail') as HTMLElement | null;
+    const move = () => {
+      const container = containerRef.current;
+      if (!container) return;
 
-    if (!pacman || !trail) return;
+      const maxX = container.offsetWidth - 48; // ширина Pacman
+      const maxY = container.offsetHeight - 48;
 
-    let x = 0;
-    let y = 0;
-    let angle = 0;
+      const dir = DIRECTIONS[Math.floor(Math.random() * DIRECTIONS.length)];
+      const dx = dir.x * STEP_SIZE;
+      const dy = dir.y * STEP_SIZE;
 
-    function randomStep() {
-      // Случайное направление: 0, 90, 180, 270 градусов
-      const direction = Math.floor(Math.random() * 4) * 90;
-      angle = direction;
+      setPosition(prev => {
+        const newX = Math.max(0, Math.min(prev.x + dx, maxX));
+        const newY = Math.max(0, Math.min(prev.y + dy, maxY));
 
-      // Длина шага (в пикселях)
-      const step = 60;
+        setAngle(dirToAngle(dir));
+        setTrail(prevTrail => [...prevTrail.slice(-TRAIL_LENGTH), { x: newX, y: newY, time: Date.now() }]);
 
-      // Смещение по направлению
-      switch (direction) {
-        case 0: x += step; break;       // вправо
-        case 90: y -= step; break;      // вверх
-        case 180: x -= step; break;     // влево
-        case 270: y += step; break;     // вниз
-      }
+        return { x: newX, y: newY };
+      });
+    };
 
-      // Ограничение по краям экрана
-      x = Math.max(0, Math.min(window.innerWidth - 60, x));
-      y = Math.max(0, Math.min(window.innerHeight - 60, y));
-
-      // Применяем трансформации
-      pacman.style.transform = `translate(${x}px, ${y}px) rotate(${angle}deg)`;
-      trail.style.transform = `translate(${x}px, ${y}px)`;
-
-      // Плавное исчезновение следа
-      trail.style.opacity = '1';
-      setTimeout(() => {
-        if (trail) trail.style.opacity = '0';
-      }, 2000); // исчезает через 2 секунды
-    }
-
-    const interval = setInterval(randomStep, 2000);
-
+    const interval = setInterval(move, MOVE_INTERVAL);
     return () => clearInterval(interval);
   }, []);
 
   return (
-    <>
-      {/* Trail (белый след) */}
-      <div
-        className="pacman-trail fixed w-12 h-12 bottom-[40px] left-0 bg-white z-[900] pointer-events-none transition-opacity duration-1000 opacity-0"
-        style={{ borderRadius: '50%' }}
-      />
-      
+    <div ref={containerRef} className="relative w-full min-h-screen overflow-hidden">
+      {/* след */}
+      {trail.map((pt, i) => {
+        const age = Date.now() - pt.time;
+        const opacity = 1 - age / FADE_DURATION;
+        if (opacity <= 0) return null;
+        return (
+          <div
+            key={i}
+            className="absolute bg-white"
+            style={{
+              width: 48,
+              height: 48,
+              left: pt.x,
+              top: pt.y,
+              opacity,
+              transition: `opacity ${FADE_DURATION}ms linear`,
+              pointerEvents: 'none',
+            }}
+          />
+        );
+      })}
+
       {/* Pacman */}
       <svg
-        className="pacman fixed w-12 h-12 bottom-[40px] left-0 z-[1000] pointer-events-none transition-transform duration-1000"
+        className="absolute w-12 h-12 z-50"
+        style={{
+          left: position.x,
+          top: position.y,
+          transform: `rotate(${angle}deg)`
+        }}
         viewBox="0 0 100 100"
         xmlns="http://www.w3.org/2000/svg"
       >
@@ -76,12 +93,22 @@ export default function PacmanTrail() {
                   M50,50 L100,48 A50,50 0 1,1 100,52 Z;
                   M50,50 L100,30 A50,50 0 1,1 100,70 Z"
               />
+              <animate attributeName="fill" values="black;black;black" dur="0.6s" repeatCount="indefinite" />
             </path>
           </mask>
         </defs>
+
         <circle cx="50" cy="50" r="50" fill="#B0BF93" mask="url(#mouth)" />
         <circle cx="43" cy="22" r="8" fill="#536C4A" />
       </svg>
-    </>
+    </div>
   );
+}
+
+function dirToAngle(dir: { x: number; y: number }) {
+  if (dir.x === 1) return 0;
+  if (dir.y === 1) return 90;
+  if (dir.x === -1) return 180;
+  if (dir.y === -1) return 270;
+  return 0;
 }
