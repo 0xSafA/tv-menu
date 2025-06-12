@@ -26,6 +26,14 @@ module.exports = {
         accent: '#B0BF93',
       },
       keyframes: {
+        glitchShake: {
+      '0%': { transform: 'translate(0, 0)' },
+      '20%': { transform: 'translate(-2px, 2px)' },
+      '40%': { transform: 'translate(2px, -2px)' },
+      '60%': { transform: 'translate(-1px, 1px)' },
+      '80%': { transform: 'translate(1px, -1px)' },
+      '100%': { transform: 'translate(0, 0)' },
+    },
         pacPath: {
           '0%': {
             transform: 'translate(-40px, 0) rotate(0deg)', // ← движется вправо
@@ -68,6 +76,8 @@ module.exports = {
         trailWipe: 'trailWipe 40s ease-out forwards',
         breath: 'breath 1.8s ease-in-out infinite',
         breathLeaf: 'breathLeaf 1.8s ease-in-out infinite',
+            glitchShake: 'glitchShake 0.3s linear infinite',
+
       },
     },
   },
