@@ -183,7 +183,7 @@ function CategoryBlock({ name, rows }: { name: string; rows: MenuRow[] }) {
       
 
 <svg
-  className="fixed w-12 h-12 bottom-[120px] left-0 z-[1000] pointer-events-none animate-pacPathFade"
+  className="fixed w-12 h-12 bottom-[40px] left-0 z-[1000] pointer-events-none animate-pacPathFade"
   viewBox="0 0 100 100"
   xmlns="http://www.w3.org/2000/svg"
 >
@@ -207,7 +207,7 @@ function CategoryBlock({ name, rows }: { name: string; rows: MenuRow[] }) {
 
   <circle cx="50" cy="50" r="50" fill="#B0BF93" mask="url(#mouth)" />
 
-  <circle cx="43" cy="22" r="7" fill="#536C4A" />
+  <circle cx="43" cy="22" r="8" fill="#536C4A" />
 </svg>
 
 

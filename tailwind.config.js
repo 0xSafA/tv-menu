@@ -21,6 +21,11 @@ module.exports = {
         accent: '#B0BF93',
       },
       keyframes: {
+         trailWipe: {
+      '0%': { width: '0px', opacity: 1 },
+      '80%': { width: '1100px', opacity: 1 },
+      '100%': { width: '1100px', opacity: 0 },
+    },
         pacPath: {
           '0%': {
             transform: 'translate(-40px, 0) rotate(0deg)', // ← движется вправо
@@ -45,20 +50,20 @@ module.exports = {
         },
 
         pacFade: {
-          '0%, 45%': { opacity: 1 },
-                    '0%, 65%': { opacity: 1 },
+          '0%, 25%': { opacity: 1 },
+          '26%, 35%': { opacity: 0.5 },
+'36%, 55%': { opacity: 0 },
+'56, 66%': { opacity: 0.5 },
+'67%': { opacity: 1 },
 
-          '70%': { opacity: 0.5 },
-          '75%, 85%': { opacity: 0 },
-          '90%': { opacity: 0.5 },
-          '100%': { opacity: 1 },
-        },
+  '76%': { opacity: 0.5 },
+                  },
       },
       animation: {
         pacPath: 'pacPath 40s ease-in-out infinite',
         pacFade: 'pacFade 30s linear infinite',
         pacPathFade: 'pacPath 40s ease-in-out infinite, pacFade 30s linear infinite',
-
+        trailWipe: 'trailWipe 6s ease-out forwards',
         breath: 'breath 1.8s ease-in-out infinite',
         breathLeaf: 'breathLeaf 1.8s ease-in-out infinite',
       },
