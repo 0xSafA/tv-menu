@@ -65,8 +65,8 @@ module.exports = {
                   },
                          trailWipe: {
       '0%': { width: '0px', opacity: 1 },
-      '80%': { width: '1100px', opacity: 1 },
-      '100%': { width: '1100px', opacity: 0 },
+      '80%': { width: '1320px', opacity: 1 },
+      '100%': { width: '1320px', opacity: 0 },
     },
       },
       animation: {
