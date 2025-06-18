@@ -70,9 +70,9 @@ export default function PacmanTrail() {
       {trail.map(({ x, y, angle, id }) => (
     <div
   key={id}
-  className="fixed w-[100px] h-[45px] bg-white opacity-15 rounded-sm  pointer-events-none transition-opacity duration-1000 z-[998]"
+  className="fixed w-[135px] h-[45px] bg-white opacity-15 rounded-sm  pointer-events-none transition-opacity duration-1000 z-[998]"
   style={{
-    transform: `translate(${x}px, ${y}px) rotate(${angle}deg) translateX(-52px)`,
+    transform: `translate(${x}px, ${y}px) rotate(${angle}deg) translateX(-68px)`,
     transformOrigin: 'center center',
   }}
 />
