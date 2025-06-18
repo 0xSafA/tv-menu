@@ -1,4 +1,4 @@
-/*globals.css */
+/* globals.css */
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:wght@700&display=swap');
 @tailwind base;
@@ -10,15 +10,17 @@
   --color-primary-light: #B0BF93;
 }
 
-html,
-body {
-  @apply font-sans text-primary antialiased;
-}
+@layer base {
+  html,
+  body {
+    @apply font-sans text-primary antialiased;
+  }
 
-h1,
-h2,
-h3 {
-  @apply font-sans;
+  h1,
+  h2,
+  h3 {
+    @apply font-sans;
+  }
 }
 
 /* маленькая цветная точка перед названием сорта */
@@ -32,4 +34,11 @@ body[data-active='sativa']  .dot[data-color='sativa'],
 body[data-active='indica']  .dot[data-color='indica'],
 body[data-active='leaf']    [data-color='leaf'] {
   @apply animate-breath;
+}
+
+.transition-transform {
+  transition: transform 0.5s ease-in-out;
+}
+.transition-opacity {
+  transition: opacity 0.5s ease-out;
 }
