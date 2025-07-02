@@ -1,3 +1,4 @@
+//menu=helpers.ts
 import type { MenuRow } from './google';
 
 /* ------------------------------------------------------------------

@@ -1,18 +1,22 @@
 // pages/menu.tsx
 import type { GetStaticProps, NextPage } from 'next';
 import Image from 'next/image';
-import { fetchMenu, MenuRow } from '@/lib/google';
 import { columnsPerCategory, groupRows } from '@/lib/menu-helpers';
 import { useEffect } from 'react';
 import PulseController from '@/components/PulseController';
 import PacmanTrail from '@/components/PacmanTrail';
+import { fetchMenuWithOptions } from '@/lib/google';
 
-
-
-/* ───────────────────────────── types ─────────────────────────── */
 interface MenuProps {
   rows: MenuRow[];
+  layout: {
+    column1: string[];
+    column2: string[];
+    column3: string[];
+  };
+  packmanText?: string;
 }
+
 
 /* ───────────── цветные индикаторы ───────────── */
 const typeColor = {
@@ -34,44 +38,24 @@ const column1 = ['TOP SHELF', 'MID SHELF'];
 const column2 = ['PREMIUM', 'SMALLS', 'CBG', 'PRE ROLLS'];
 const column3 = ['FRESH FROZEN HASH', 'LIVE HASH ROSIN', 'DRY SIFT HASH', 'ICE BUBBLE HASH'];
 
-/* ───────────── страница меню ───────────── */
-const MenuPage: NextPage<MenuProps> = ({ rows }) => {
+const MenuPage: NextPage<MenuProps> = ({ rows, layout, packmanText }) => {
   const grouped = groupRows(rows);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      window.location.reload();
-    }, 600000); // каждые 600 секунд (10 минут)
-
-    return () => clearInterval(interval);
-  }, []);
-
   return (
-    <main className='min-h-screen flex flex-col items-center font-[Inter] text-neutral-900 bg-white'>
-
-      <div className='mt-4' />
-      {/* логотип + MENU */}
-      <PulseController />
-      <header className='flex items-center justify-center gap-3 text-[#536C4A] py-3'>
-        <Image src='/logo-og-lab.svg' alt='OG Lab logo' width={100.3} height={29} />
-        <h1 className='text-3xl font-extrabold tracking-widest'>MENU</h1>
-      </header>
-
-      <Line />
-      <div className='mt-4' />
-
-      <section className='w-full max-w-[1600px] pb-6 px-4 relative'>
+    <main>
+      {/* ... */}
+      <section className='...'>
         <div className='grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-3 gap-8'>
           {/* 1 колонка */}
           <div className='space-y-8'>
-            {column1.map(cat => (
+            {layout.column1.map((cat) => (
               <CategoryBlock key={cat} name={cat} rows={grouped[cat] ?? []} />
             ))}
           </div>
 
           {/* 2 колонка */}
           <div className='space-y-8'>
-            {column2.map(cat => (
+            {layout.column2.map((cat) => (
               <CategoryBlock key={cat} name={cat} rows={grouped[cat] ?? []} />
             ))}
           </div>
@@ -80,14 +64,13 @@ const MenuPage: NextPage<MenuProps> = ({ rows }) => {
           <div className='relative pl-6'>
             <span className='hidden lg:block absolute left-[-12px] top-0 h-full w-[3px] bg-[var(--color-primary-light)]' />
             <div className='space-y-8'>
-              {column3.map(cat => (
+              {layout.column3.map((cat) => (
                 <CategoryBlock key={cat} name={cat} rows={grouped[cat] ?? []} />
               ))}
             </div>
           </div>
         </div>
       </section>
-
 
       {/* нижняя полоса */}
       <Line />
@@ -96,23 +79,34 @@ const MenuPage: NextPage<MenuProps> = ({ rows }) => {
       {/* легенда */}
       <footer className='mt-4 w-full max-w-[1570px] text-lg flex flex-wrap items-center gap-4 pb-6 px-4'>
         <LegendDot color={typeColor.hybrid} label='Hybrid' dataColor='hybrid' />
-        <LegendDot color={typeColor.sativa} label='Dominant Sativa' dataColor='sativa' />
-        <LegendDot color={typeColor.indica} label='Dominant Indica' dataColor='indica' />
+        <LegendDot
+          color={typeColor.sativa}
+          label='Dominant Sativa'
+          dataColor='sativa'
+        />
+        <LegendDot
+          color={typeColor.indica}
+          label='Dominant Indica'
+          dataColor='indica'
+        />
         <LegendDot color='#536C4A' label='Our farm-grown' isLeaf />
         <span className='ml-auto text-lg'>Weed (with batches from 5g)</span>
-        <span className='ml-auto text-lg'>Ask your budtender about a Dab Session</span>
+        <span className='ml-auto text-lg'>
+          Ask your budtender about a Dab Session
+        </span>
       </footer>
-      <PacmanTrail />
+      <PacmanTrail text={packmanText ?? ''} />
     </main>
   );
 };
 export default MenuPage;
 
-/* ───────────── SSG (ISR 15 мин) ───────────── */
 export const getStaticProps: GetStaticProps<MenuProps> = async () => {
-  const rows = await fetchMenu();
-  return { props: { rows }, revalidate: 900 };
+  const { rows, layout, packmanText } = await fetchMenuWithOptions();
+  return { props: { rows, layout, packmanText }, revalidate: 900 };
 };
+// 15 минут (900 секунд)
+
 
 /* ───────────── helpers & ui ───────────── */
 function CategoryBlock({ name, rows }: { name: string; rows: MenuRow[] }) {

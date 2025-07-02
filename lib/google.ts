@@ -16,7 +16,7 @@ const auth = new google.auth.JWT(
 
 const sheets = google.sheets({ version: 'v4', auth });
 
-/** Строка из таблицы OG Lab Menu */
+/* ───────────── типы ───────────── */
 export interface MenuRow {
   Category: string | null;
   Name: string | null;
@@ -28,31 +28,17 @@ export interface MenuRow {
   Price_20g?: number | null;
   Type?: string | null;
   Our?: boolean | null;
+  PackmanTrail?: string | null;
 }
 
-     /* --- helper: превращаем undefined в null ------------------------ */
-     function orNull<T>(v: T | undefined): T | null {
-      return v === undefined ? null : v;
-    }
-
-/** Преобразует значение TRUE/FALSE в boolean */
-function parseBoolean(value: unknown): boolean | undefined {
-  if (typeof value === 'string') {
-    const v = value.trim().toUpperCase();
-    if (v === 'TRUE') return true;
-    if (v === 'FALSE') return false;
-  }
-  if (typeof value === 'boolean') return value;
-  return undefined;
+export interface MenuLayout {
+  column1: string[];
+  column2: string[];
+  column3: string[];
 }
 
-/** Преобразует значение в число (если возможно) */
-function parseNumber(value: unknown): number | undefined {
-  const n = typeof value === 'number' ? value : parseFloat(String(value));
-  return isNaN(n) ? undefined : n;
-}
-
-export async function fetchMenu(): Promise<MenuRow[]> {
+/* ───────────── основное меню ───────────── */
+export async function fetchMenuWithOptions(): Promise<MenuRow[]> {
   const { data } = await sheets.spreadsheets.values.get({
     spreadsheetId: process.env.GS_SHEET_ID!,
     range: 'A1:Z',
@@ -87,6 +73,7 @@ export async function fetchMenu(): Promise<MenuRow[]> {
           case 'Category':
           case 'Name':
           case 'Type':
+          case 'PackmanTrail':
             item[k as keyof MenuRow] = String(v ?? '').trim() as never;
             break;
         }
@@ -95,4 +82,81 @@ export async function fetchMenu(): Promise<MenuRow[]> {
       return item as MenuRow;
     })
     .filter((row) => row.Name && row.Category);
+}
+
+/* ───────────── layout + PackmanTrail ───────────── */
+
+export async function fetchMenuWithOptions(): Promise<{
+  rows: MenuRow[];
+  layout: MenuLayout;
+  packmanText: string;
+}> {
+  const rows = await fetchMenuWithOptions();
+
+  const layout: MenuLayout = {
+    column1: [],
+    column2: [],
+    column3: [],
+  };
+
+  let packmanText = '';
+
+  try {
+    const { data } = await sheets.spreadsheets.values.get({
+      spreadsheetId: process.env.GS_SHEET_ID!,
+      range: 'Options!A2:C100',
+      valueRenderOption: 'UNFORMATTED_VALUE',
+    });
+
+    if (
+      !layout.column1.length ||
+      !layout.column2.length ||
+      !layout.column3.length
+    ) {
+      console.warn(
+        '⚠️ Warning: Layout columns are empty! Check Options sheet data or parsing logic.'
+      );
+    }    
+
+    if (data?.values) {
+      data.values.forEach((row, idx) => {
+        const col = String(row[0] ?? '').trim();
+        const categories = String(row[1] ?? '')
+          .split(',')
+          .map((s) => s.trim());
+
+        if (col === '1') layout.column1 = categories;
+        if (col === '2') layout.column2 = categories;
+        if (col === '3') layout.column3 = categories;
+
+        // берем packmanText только из первой строки
+        if (idx === 0 && row[2]) packmanText = String(row[2]);
+      });
+    }
+  } catch (e) {
+    console.warn('Options sheet fetch failed', e);
+  }
+
+  return { rows, layout, packmanText };
+}
+
+
+/* ───────────── утилиты ───────────── */
+function orNull<T>(v: T | undefined): T | null {
+  return v === undefined ? null : v;
+}
+
+function parseBoolean(value: unknown): boolean | undefined {
+  if (typeof value === 'string') {
+    const v = value.trim().toUpperCase();
+    if (v === 'TRUE') return true;
+    if (v === 'FALSE') return false;
+  }
+  if (typeof value === 'boolean') return value;
+  return undefined;
+}
+
+function parseNumber(value: unknown): number | undefined {
+  const n = typeof value === 'number' ? value : parseFloat(String(value));
+  return isNaN(n) ? undefined : n;
 }
