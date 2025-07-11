@@ -37,8 +37,66 @@ export interface MenuLayout {
   column3: string[];
 }
 
+/* ───────────── layout + PackmanTrail ───────────── */
+export async function fetchMenuWithOptions(): Promise<{
+  rows: MenuRow[];
+  layout: MenuLayout;
+  packmanText: string;
+}> {
+  const rows = (await fetchRows()) ?? [];
+
+  const layout: MenuLayout = {
+    column1: [],
+    column2: [],
+    column3: [],
+  };
+
+  let packmanText = '';
+
+  try {
+    const { data } = await sheets.spreadsheets.values.get({
+      spreadsheetId: process.env.GS_SHEET_ID!,
+      range: 'Options!A2:C100',
+      valueRenderOption: 'UNFORMATTED_VALUE',
+    });
+
+    if (data?.values) {
+      data.values.forEach((row, idx) => {
+        const col = String(row[0] ?? '').trim();
+        const categories = String(row[1] ?? '')
+          .split(',')
+          .map((s) => s.trim());
+
+        if (col === '1') layout.column1 = categories;
+        if (col === '2') layout.column2 = categories;
+        if (col === '3') layout.column3 = categories;
+
+        if (idx === 0 && row[2]) packmanText = String(row[2]);
+      });
+
+      if (
+        !layout.column1.length ||
+        !layout.column2.length ||
+        !layout.column3.length
+      ) {
+        console.warn(
+          '⚠️ Warning: Layout columns are empty! Check Options sheet data or parsing logic.'
+        );
+      }
+    }
+  } catch (e) {
+    console.warn('Options sheet fetch failed', e);
+  }
+
+  console.log('[DEBUG] rows:', Array.isArray(rows), rows?.length);
+  console.log('[DEBUG] layout:', layout);
+  console.log('[DEBUG] packmanText:', packmanText);
+
+  return { rows, layout, packmanText };
+}
+
 /* ───────────── основное меню ───────────── */
-export async function fetchMenuWithOptions(): Promise<MenuRow[]> {
+async function fetchRows(): Promise<MenuRow[]> {
   const { data } = await sheets.spreadsheets.values.get({
     spreadsheetId: process.env.GS_SHEET_ID!,
     range: 'A1:Z',
@@ -83,63 +141,6 @@ export async function fetchMenuWithOptions(): Promise<MenuRow[]> {
     })
     .filter((row) => row.Name && row.Category);
 }
-
-/* ───────────── layout + PackmanTrail ───────────── */
-
-export async function fetchMenuWithOptions(): Promise<{
-  rows: MenuRow[];
-  layout: MenuLayout;
-  packmanText: string;
-}> {
-  const rows = await fetchMenuWithOptions();
-
-  const layout: MenuLayout = {
-    column1: [],
-    column2: [],
-    column3: [],
-  };
-
-  let packmanText = '';
-
-  try {
-    const { data } = await sheets.spreadsheets.values.get({
-      spreadsheetId: process.env.GS_SHEET_ID!,
-      range: 'Options!A2:C100',
-      valueRenderOption: 'UNFORMATTED_VALUE',
-    });
-
-    if (
-      !layout.column1.length ||
-      !layout.column2.length ||
-      !layout.column3.length
-    ) {
-      console.warn(
-        '⚠️ Warning: Layout columns are empty! Check Options sheet data or parsing logic.'
-      );
-    }    
-
-    if (data?.values) {
-      data.values.forEach((row, idx) => {
-        const col = String(row[0] ?? '').trim();
-        const categories = String(row[1] ?? '')
-          .split(',')
-          .map((s) => s.trim());
-
-        if (col === '1') layout.column1 = categories;
-        if (col === '2') layout.column2 = categories;
-        if (col === '3') layout.column3 = categories;
-
-        // берем packmanText только из первой строки
-        if (idx === 0 && row[2]) packmanText = String(row[2]);
-      });
-    }
-  } catch (e) {
-    console.warn('Options sheet fetch failed', e);
-  }
-
-  return { rows, layout, packmanText };
-}
-
 
 /* ───────────── утилиты ───────────── */
 function orNull<T>(v: T | undefined): T | null {
