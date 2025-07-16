@@ -1,26 +1,19 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
 
-const directions = [
-  { dx: 1, dy: 0, angle: 0 },     // right
-  { dx: -1, dy: 0, angle: 180 },  // left
-  { dx: 0, dy: 1, angle: 90 },    // down
-  { dx: 0, dy: -1, angle: -90 },  // up
-];
-
 export default function PacmanTrail() {
   const pacmanRef = useRef<SVGSVGElement>(null);
   const [trail, setTrail] = useState<{ x: number; y: number; angle: number; id: number }[]>([]);
 
   function getOffsetByAngle(angle: number) {
-  switch (angle) {
-    case 0:     return 'translate(-95px, 0)';  // → вправо
-    case 180:   return 'translate(95px, 0)';   // ← влево
-    case 90:    return 'translate(0, -70px)';  // ↓ вниз
-    case -90:   return 'translate(0, 70px)';   // ↑ вверх
-    default:    return 'translate(-95px, 0)';
+    switch (angle) {
+      case 0: return 'translate(-155px, 0)';   // → вправо
+      case 180: return 'translate(-25px, 0)';  // ← влево
+      case 90: return 'translate(0, -70px)';  // ↓ вниз
+      case -90: return 'translate(0, 70px)';  // ↑ вверх
+      default: return 'translate(-155px, 0)';
+    }
   }
-}
 
   useEffect(() => {
     const pacman = pacmanRef.current;
@@ -28,67 +21,69 @@ export default function PacmanTrail() {
 
     let x = 100;
     let y = 100;
-    let dirIndex = 0;
     let angle = 0;
     let lastId = 0;
 
-    const size = 60;
+    const w = window.innerWidth;
+    const h = window.innerHeight;
+
+    const path = [
+      { x: 100, y: 100, angle: 0 },
+      { x: w - 100, y: 100, angle: 0 },
+      { x: w - 100, y: 250, angle: 90 },
+      { x: 100, y: 250, angle: 180 },
+      { x: 100, y: 400, angle: 90 },
+      { x: w - 100, y: 400, angle: 0 },
+      { x: w - 100, y: 550, angle: 90 },
+      { x: 100, y: 550, angle: 180 },
+      { x: 100, y: 700, angle: 90 },
+      { x: w / 2, y: 700, angle: 0 },
+      { x: w / 2, y: h - 100, angle: 90 },
+    ];
+
+    let pathIndex = 1;
+    let target = path[pathIndex];
     const speed = 1;
-    const maxW = window.innerWidth - size;
-    const maxH = window.innerHeight - size;
 
     const interval = setInterval(() => {
-      let attempts = 0;
-      let chosen = false;
-      let dir = directions[dirIndex];
+      const dx = target.x - x;
+      const dy = target.y - y;
 
-      while (attempts < 10 && !chosen) {
-        const nextX = x + dir.dx * speed;
-        const nextY = y + dir.dy * speed;
-
-        if (nextX >= 0 && nextX <= maxW && nextY >= 0 && nextY <= maxH) {
-          chosen = true;
-          break;
-        }
-
-        dirIndex = Math.floor(Math.random() * directions.length);
-        dir = directions[dirIndex];
-        attempts++;
-      }
-
-      // fallback: если не нашли новое направление — идём назад
-      if (!chosen) {
-        dirIndex = (dirIndex + 2) % directions.length;
-        dir = directions[dirIndex];
-      }
-
-      x += dir.dx * speed;
-      y += dir.dy * speed;
-      angle = dir.angle;
+  if (Math.abs(dx) < speed && Math.abs(dy) < speed) {
+  x = target.x;
+  y = target.y;
+  pathIndex = (pathIndex + 1) % path.length;
+  target = path[pathIndex];
+  angle = target.angle;
+} else {
+  if (x !== target.x) {
+    x += speed * Math.sign(dx);
+  } else if (y !== target.y) {
+    y += speed * Math.sign(dy);
+  }
+}
 
       pacman.style.transform = `translate(${x}px, ${y}px) rotate(${angle}deg)`;
 
       setTrail(prev => [...prev.slice(-350), { x, y, angle, id: lastId++ }]);
-    }, 25); // 40 FPS
+    }, 25); // ~40 FPS
 
     return () => clearInterval(interval);
   }, []);
 
   return (
     <>
-      {trail.map(({ x, y, angle, id }) => {
+      {trail.map(({ x, y, angle, id }) => (
+        <div
+          key={id}
+          className="fixed w-[175px] h-[45px] bg-white opacity-15 rounded-sm pointer-events-none transition-opacity duration-1000 z-[998]"
+          style={{
+            transform: `translate(${x}px, ${y}px) rotate(${angle}deg) ${getOffsetByAngle(angle)}`,
+            transformOrigin: 'center center',
+          }}
+        />
+      ))}
 
-  return (
-    <div
-  key={id}
-  className="fixed w-[135px] h-[45px] bg-white opacity-15 rounded-sm pointer-events-none transition-opacity duration-1000 z-[998]"
-  style={{
-    transform: `translate(${x}px, ${y}px) rotate(${angle}deg) ${getOffsetByAngle(angle)}`,
-    transformOrigin: 'center center',
-  }}
-/>
-  );
-})}
       <svg
         ref={pacmanRef}
         className="fixed w-12 h-12 z-[1000] pointer-events-none"
