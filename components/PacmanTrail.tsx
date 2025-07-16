@@ -4,41 +4,40 @@ import { useEffect, useRef, useState } from 'react';
 export default function PacmanTrail() {
   const pacmanRef = useRef<SVGSVGElement>(null);
   const [trail, setTrail] = useState<{ x: number; y: number; angle: number; id: number }[]>([]);
+  const [angle, setAngle] = useState(0);
+  const [position, setPosition] = useState({ x: 100, y: 100 });
 
   function getOffsetByAngle(angle: number) {
     switch (angle) {
-      case 0: return 'translate(-155px, 0)';   // → вправо
-      case 180: return 'translate(-25px, 0)';  // ← влево
-      case 90: return 'translate(0, -70px)';  // ↓ вниз
-      case -90: return 'translate(0, 70px)';  // ↑ вверх
+      case 0: return 'translate(-155px, 0)';    // → вправо
+      case 180: return 'translate(20px, 0)';    // ← влево
+      case 90: return 'translate(0, -35px)';    // ↓ вниз
+      case -90: return 'translate(0, 45px)';    // ↑ вверх
       default: return 'translate(-155px, 0)';
     }
   }
 
   useEffect(() => {
-    const pacman = pacmanRef.current;
-    if (!pacman) return;
-
-    let x = 100;
-    let y = 100;
-    let angle = 0;
-    let lastId = 0;
-
     const w = window.innerWidth;
     const h = window.innerHeight;
 
+    let x = 100;
+    let y = 100;
+    let localAngle = 0;
+    let lastId = 0;
+
     const path = [
-      { x: 100, y: 100, angle: 0 },
-      { x: w - 100, y: 100, angle: 0 },
-      { x: w - 100, y: 250, angle: 90 },
-      { x: 100, y: 250, angle: 180 },
-      { x: 100, y: 400, angle: 90 },
-      { x: w - 100, y: 400, angle: 0 },
-      { x: w - 100, y: 550, angle: 90 },
-      { x: 100, y: 550, angle: 180 },
-      { x: 100, y: 700, angle: 90 },
-      { x: w / 2, y: 700, angle: 0 },
-      { x: w / 2, y: h - 100, angle: 90 },
+      { x: 100, y: 100 },
+      { x: w - 100, y: 100 },
+      { x: w - 100, y: 250 },
+      { x: 100, y: 250 },
+      { x: 100, y: 400 },
+      { x: w - 100, y: 400 },
+      { x: w - 100, y: 550 },
+      { x: 100, y: 550 },
+      { x: 100, y: 700 },
+      { x: w / 2, y: 700 },
+      { x: w / 2, y: h - 100 },
     ];
 
     let pathIndex = 1;
@@ -49,24 +48,30 @@ export default function PacmanTrail() {
       const dx = target.x - x;
       const dy = target.y - y;
 
-  if (Math.abs(dx) < speed && Math.abs(dy) < speed) {
-  x = target.x;
-  y = target.y;
-  pathIndex = (pathIndex + 1) % path.length;
-  target = path[pathIndex];
-  angle = target.angle;
-} else {
-  if (x !== target.x) {
-    x += speed * Math.sign(dx);
-  } else if (y !== target.y) {
-    y += speed * Math.sign(dy);
-  }
-}
+      if (Math.abs(dx) < speed && Math.abs(dy) < speed) {
+        x = target.x;
+        y = target.y;
+        pathIndex = (pathIndex + 1) % path.length;
+        target = path[pathIndex];
 
-      pacman.style.transform = `translate(${x}px, ${y}px) rotate(${angle}deg)`;
+        const nextDx = target.x - x;
+        const nextDy = target.y - y;
+        if (nextDx !== 0) localAngle = nextDx > 0 ? 0 : 180;
+        else if (nextDy !== 0) localAngle = nextDy > 0 ? 90 : -90;
+      } else {
+        if (x !== target.x) {
+          x += speed * Math.sign(dx);
+          localAngle = dx > 0 ? 0 : 180;
+        } else if (y !== target.y) {
+          y += speed * Math.sign(dy);
+          localAngle = dy > 0 ? 90 : -90;
+        }
+      }
 
-      setTrail(prev => [...prev.slice(-350), { x, y, angle, id: lastId++ }]);
-    }, 25); // ~40 FPS
+      setPosition({ x, y });
+      setAngle(localAngle);
+      setTrail(prev => [...prev.slice(-350), { x, y, angle: localAngle, id: lastId++ }]);
+    }, 25);
 
     return () => clearInterval(interval);
   }, []);
@@ -78,7 +83,7 @@ export default function PacmanTrail() {
           key={id}
           className="fixed w-[175px] h-[45px] bg-white opacity-15 rounded-sm pointer-events-none transition-opacity duration-1000 z-[998]"
           style={{
-            transform: `translate(${x}px, ${y}px) rotate(${angle}deg) ${getOffsetByAngle(angle)}`,
+            transform: `translate(${x}px, ${y}px) ${getOffsetByAngle(angle)}`,
             transformOrigin: 'center center',
           }}
         />
@@ -89,25 +94,31 @@ export default function PacmanTrail() {
         className="fixed w-12 h-12 z-[1000] pointer-events-none"
         viewBox="0 0 100 100"
         xmlns="http://www.w3.org/2000/svg"
+        style={{
+          transform: `translate(${position.x}px, ${position.y}px)`,
+          transformOrigin: 'center center',
+        }}
       >
-        <defs>
-          <mask id="mouth">
-            <rect width="100" height="100" fill="white" />
-            <path>
-              <animate
-                attributeName="d"
-                dur="0.6s"
-                repeatCount="indefinite"
-                values="
-                  M50,50 L100,30 A50,50 0 1,1 100,70 Z;
-                  M50,50 L100,48 A50,50 0 1,1 100,52 Z;
-                  M50,50 L100,30 A50,50 0 1,1 100,70 Z"
-              />
-            </path>
-          </mask>
-        </defs>
-        <circle cx="50" cy="50" r="50" fill="#B0BF93" mask="url(#mouth)" />
-        <circle cx="40" cy="26" r="9" fill="#536C4A" />
+        <g transform={`rotate(${angle}, 50, 50)`}>
+          <defs>
+            <mask id="mouth">
+              <rect width="100" height="100" fill="white" />
+              <path>
+                <animate
+                  attributeName="d"
+                  dur="0.6s"
+                  repeatCount="indefinite"
+                  values="
+                    M50,50 L100,30 A50,50 0 1,1 100,70 Z;
+                    M50,50 L100,48 A50,50 0 1,1 100,52 Z;
+                    M50,50 L100,30 A50,50 0 1,1 100,70 Z"
+                />
+              </path>
+            </mask>
+          </defs>
+          <circle cx="50" cy="50" r="50" fill="#B0BF93" mask="url(#mouth)" />
+          <circle cx="40" cy="26" r="9" fill="#536C4A" />
+        </g>
       </svg>
     </>
   );
