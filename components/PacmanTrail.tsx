@@ -3,19 +3,9 @@ import { useEffect, useRef, useState } from 'react';
 
 export default function PacmanTrail() {
   const pacmanRef = useRef<SVGSVGElement>(null);
-  const [trail, setTrail] = useState<{ x: number; y: number; angle: number; id: number }[]>([]);
+  const [trail, setTrail] = useState<{ x: number; y: number; id: number }[]>([]);
   const [angle, setAngle] = useState(0);
   const [position, setPosition] = useState({ x: 100, y: 100 });
-
-  function getOffsetByAngle(angle: number) {
-    switch (angle) {
-      case 0: return 'translate(-155px, 0)';    // → вправо
-      case 180: return 'translate(20px, 0)';    // ← влево
-      case 90: return 'translate(0px, -145px)';    // ↓ вниз
-      case -90: return 'translate(0, 25px)';    // ↑ вверх
-      default: return 'translate(-155px, 0)';
-    }
-  }
 
   useEffect(() => {
     const w = window.innerWidth;
@@ -37,7 +27,10 @@ export default function PacmanTrail() {
       { x: 100, y: 550 },
       { x: 100, y: 700 },
       { x: w / 2, y: 700 },
-      { x: w / 2, y: h - 100 },
+      { x: w / 2, y: h / 2 },
+      { x: w / 2 + 200, y: h / 2 },
+      { x: w / 2 + 200, y: h - 100 },
+      { x: 100, y: h - 100 },
     ];
 
     let pathIndex = 1;
@@ -68,9 +61,33 @@ export default function PacmanTrail() {
         }
       }
 
+      const pacmanSize = 48;
+      let offsetX = 0;
+      let offsetY = 0;
+
+      switch (localAngle) {
+        case 0:
+          offsetX = -pacmanSize / 4;
+          break;
+        case 180:
+          offsetX = pacmanSize / 4;
+          break;
+        case 90:
+          offsetY = -pacmanSize / 4;
+          break;
+        case -90:
+          offsetY = pacmanSize / 4;
+          break;
+        default:
+          offsetX = -pacmanSize / 4;
+      }
+
       setPosition({ x, y });
       setAngle(localAngle);
-      setTrail(prev => [...prev.slice(-350), { x, y, angle: localAngle, id: lastId++ }]);
+      setTrail(prev => [
+        ...prev.slice(-500),
+        { x: x + offsetX, y: y + offsetY, id: lastId++ },
+      ]);
     }, 25);
 
     return () => clearInterval(interval);
@@ -78,22 +95,16 @@ export default function PacmanTrail() {
 
   return (
     <>
-   {trail.map(({ x, y, angle, id }) => {
-  const isVertical = angle === 90 || angle === -90;
-  const width = isVertical ? 'w-[45px]' : 'w-[175px]';
-  const height = isVertical ? 'h-[175px]' : 'h-[45px]';
-
-  return (
-    <div
-      key={id}
-      className={`fixed ${width} ${height} bg-white opacity-15 rounded-sm pointer-events-none transition-opacity duration-1000 z-[998]`}
-      style={{
-        transform: `translate(${x}px, ${y}px) ${getOffsetByAngle(angle)}`,
-        transformOrigin: 'center center',
-      }}
-    />
-  );
-})}
+      {trail.map(({ x, y, id }) => (
+        <div
+          key={id}
+          className="fixed w-[48px] h-[48px] bg-white opacity-20 rounded-full pointer-events-none transition-opacity duration-1000 z-[998]"
+          style={{
+            transform: `translate(${x}px, ${y}px)`,
+            transformOrigin: 'center center',
+          }}
+        />
+      ))}
 
       <svg
         ref={pacmanRef}
