@@ -5,6 +5,7 @@ import { columnsPerCategory, groupRows } from '@/lib/menu-helpers';
 import { fetchMenuWithOptions } from '@/lib/google';
 import PulseController from '@/components/PulseController';
 import PacmanTrail from '@/components/PacmanTrail';
+import { useEffect } from 'react';
 
 interface MenuProps {
   rows: MenuRow[];
@@ -34,10 +35,20 @@ const getTypeKey = (row: MenuRow): KnownType | null => {
 };
 
 const MenuPage: NextPage<MenuProps> = ({ rows, layout }) => {
-  if (!Array.isArray(rows)) {
-    console.error('❌ MenuPage: `rows` is not an array', rows);
-    return <div className="p-4 text-red-600">Error loading menu</div>;
-  }
+  useEffect(() => {
+    const el = document.querySelector('.glitch-effect') as HTMLElement;
+    const applyRandomGlitch = () => {
+      if (el) {
+        const delay = Math.random() * 10 + 5; // 5–15s
+        el.style.setProperty('--glitch-delay', `${delay}s`);
+        el.classList.remove('glitch-effect'); // reset animation
+        void el.offsetWidth; // trigger reflow
+        el.classList.add('glitch-effect');
+      }
+    };
+    const interval = setInterval(applyRandomGlitch, 7000);
+    return () => clearInterval(interval);
+  }, []);
 
   const grouped = groupRows(rows);
 
@@ -47,13 +58,21 @@ const MenuPage: NextPage<MenuProps> = ({ rows, layout }) => {
 
       {/* Шапка */}
       <header className="flex items-center justify-center gap-3 mb-6">
-        <Image src="/logo-og-lab.svg" alt="Logo" width={80} height={80} />
-        <h1 className="text-3xl font-bold tracking-wide uppercase">Menu</h1>
+        <div className="relative">
+          <Image
+            src="/logo-og-lab.svg"
+            alt="Logo"
+            width={80}
+            height={80}
+            className="glitch-effect"
+          />
+        </div>
+        <h1 className="glitch-effect text-3xl font-bold tracking-wide uppercase">Menu</h1>
       </header>
 
       {/* Меню */}
       <section>
-        <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-3 gap-8">
+        <div className="glitch-effect grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-3 gap-8">
           {/* 1 колонка */}
           <div className="space-y-8">
             {layout.column1.map((cat) => (
@@ -97,8 +116,8 @@ const MenuPage: NextPage<MenuProps> = ({ rows, layout }) => {
 
       {/* Анимация Пакмана */}
       <div className="absolute inset-0 pointer-events-none">
-  <PacmanTrail />
-</div>
+        <PacmanTrail  />
+      </div>
     </main>
   );
 };
@@ -122,7 +141,7 @@ function CategoryBlock({ name, rows }: { name: string; rows: MenuRow[] }) {
   const showTHC = rows.some((r) => r.THC);
   const priceKeys = conf.keys.filter((k) => k !== 'THC' && k !== 'CBG');
 
-//</div><div className="menu-section-title flex items-center bg-[#536C4A] text-white font-bold px-2 py-1 rounded-sm uppercase tracking-wide">    
+  //</div><div className="menu-section-title flex items-center bg-[#536C4A] text-white font-bold px-2 py-1 rounded-sm uppercase tracking-wide">    
   return (
     <div className="space-y-1">
       <div className="menu-section-title flex items-center bg-[#536C4A] text-white font-bold px-2 py-1 rounded-sm uppercase tracking-wide outline-none border-none focus:outline-none focus:ring-0">
@@ -185,12 +204,12 @@ const Line = () => (
 );
 
 const headerLabel = (k: string) =>
-  ({
-    Price_1pc: '1PC',
-    Price_1g: '1G+',
-    Price_5g: '5G+',
-    Price_20g: '20G+',
-  }[k] ?? k);
+({
+  Price_1pc: '1PC',
+  Price_1g: '1G+',
+  Price_5g: '5G+',
+  Price_20g: '20G+',
+}[k] ?? k);
 
 function LegendDot({
   color,

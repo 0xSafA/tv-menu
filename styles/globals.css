@@ -42,3 +42,39 @@ body[data-active='leaf']    [data-color='leaf'] {
 .transition-opacity {
   transition: opacity 0.5s ease-out;
 }
+
+.glitch-effect {
+  animation: glitch 0.35s steps(2, jump-none);
+  animation-delay: var(--glitch-delay, 0s);
+}
+
+@keyframes glitch {
+  0% {
+    transform: none;
+    opacity: 1;
+  }
+  10% {
+    transform: translate(2px, -1px) skewX(-20deg);
+    opacity: 0.7;
+  }
+  20% {
+    transform: translate(-2px, 2px) skewX(20deg);
+    opacity: 0.6;
+  }
+  30% {
+    transform: translate(2px, 0) skewX(-10deg);
+    opacity: 0.8;
+  }
+  40% {
+    transform: none;
+    opacity: 1;
+  }
+  50% {
+    transform: translate(-1px, 1px) skewX(5deg);
+    opacity: 0.8;
+  }
+  100% {
+    transform: none;
+    opacity: 1;
+  }
+}
