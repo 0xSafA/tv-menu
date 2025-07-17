@@ -11,8 +11,8 @@ export default function PacmanTrail() {
     switch (angle) {
       case 0: return 'translate(-155px, 0)';    // → вправо
       case 180: return 'translate(20px, 0)';    // ← влево
-      case 90: return 'translate(0, -35px)';    // ↓ вниз
-      case -90: return 'translate(0, 45px)';    // ↑ вверх
+      case 90: return 'translate(0px, -145px)';    // ↓ вниз
+      case -90: return 'translate(0, 25px)';    // ↑ вверх
       default: return 'translate(-155px, 0)';
     }
   }
@@ -78,16 +78,22 @@ export default function PacmanTrail() {
 
   return (
     <>
-      {trail.map(({ x, y, angle, id }) => (
-        <div
-          key={id}
-          className="fixed w-[175px] h-[45px] bg-white opacity-15 rounded-sm pointer-events-none transition-opacity duration-1000 z-[998]"
-          style={{
-            transform: `translate(${x}px, ${y}px) ${getOffsetByAngle(angle)}`,
-            transformOrigin: 'center center',
-          }}
-        />
-      ))}
+   {trail.map(({ x, y, angle, id }) => {
+  const isVertical = angle === 90 || angle === -90;
+  const width = isVertical ? 'w-[45px]' : 'w-[175px]';
+  const height = isVertical ? 'h-[175px]' : 'h-[45px]';
+
+  return (
+    <div
+      key={id}
+      className={`fixed ${width} ${height} bg-white opacity-15 rounded-sm pointer-events-none transition-opacity duration-1000 z-[998]`}
+      style={{
+        transform: `translate(${x}px, ${y}px) ${getOffsetByAngle(angle)}`,
+        transformOrigin: 'center center',
+      }}
+    />
+  );
+})}
 
       <svg
         ref={pacmanRef}
