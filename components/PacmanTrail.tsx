@@ -3,7 +3,8 @@ import { useEffect, useRef, useState } from 'react';
 
 export default function PacmanTrail() {
   const pacmanRef = useRef<SVGSVGElement>(null);
-  const [trail, setTrail] = useState<{ x: number; y: number; id: number }[]>([]);
+  const trailRef = useRef<{ x: number; y: number; id: number }[]>([]);
+  const [renderTrail, setRenderTrail] = useState<typeof trailRef.current>([]);
   const [angle, setAngle] = useState(0);
   const [position, setPosition] = useState({ x: 100, y: 100 });
 
@@ -35,9 +36,12 @@ export default function PacmanTrail() {
 
     let pathIndex = 1;
     let target = path[pathIndex];
-    const speed = 1;
+    const speed = 0.4;
 
-    const interval = setInterval(() => {
+    let animationFrame: number;
+    const pacmanSize = 48;
+
+    const animate = () => {
       const dx = target.x - x;
       const dy = target.y - y;
 
@@ -61,7 +65,6 @@ export default function PacmanTrail() {
         }
       }
 
-      const pacmanSize = 48;
       let offsetX = 0;
       let offsetY = 0;
 
@@ -84,18 +87,23 @@ export default function PacmanTrail() {
 
       setPosition({ x, y });
       setAngle(localAngle);
-      setTrail(prev => [
-        ...prev.slice(-500),
-        { x: x + offsetX, y: y + offsetY, id: lastId++ },
-      ]);
-    }, 25);
 
-    return () => clearInterval(interval);
+      trailRef.current.push({ x: x + offsetX, y: y + offsetY, id: lastId++ });
+      if (trailRef.current.length > 370) {
+        trailRef.current.shift();
+      }
+
+      setRenderTrail([...trailRef.current]);
+      animationFrame = requestAnimationFrame(animate);
+    };
+
+    animationFrame = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(animationFrame);
   }, []);
 
   return (
     <>
-      {trail.map(({ x, y, id }) => (
+      {renderTrail.map(({ x, y, id }) => (
         <div
           key={id}
           className="fixed w-[48px] h-[48px] bg-white opacity-20 rounded-full pointer-events-none transition-opacity duration-1000 z-[998]"
