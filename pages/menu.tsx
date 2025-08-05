@@ -5,7 +5,7 @@ import { columnsPerCategory, groupRows } from '@/lib/menu-helpers';
 import { fetchMenuWithOptions } from '@/lib/google';
 import PulseController from '@/components/PulseController';
 import PacmanTrail from '@/components/PacmanTrail';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 interface MenuProps {
   rows: MenuRow[];
@@ -35,6 +35,16 @@ const getTypeKey = (row: MenuRow): KnownType | null => {
 };
 
 const MenuPage: NextPage<MenuProps> = ({ rows, layout }) => {
+  const [currentTime, setCurrentTime] = useState<Date>(new Date());
+
+  // Обновление времени каждую минуту
+  useEffect(() => {
+    const timeInterval = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 60000); // 60 секунд
+    return () => clearInterval(timeInterval);
+  }, []);
+
   useEffect(() => {
     const el = document.querySelector('.glitch-effect') as HTMLElement;
     const applyRandomGlitch = () => {
@@ -57,17 +67,35 @@ const MenuPage: NextPage<MenuProps> = ({ rows, layout }) => {
       <PulseController />
 
       {/* Шапка */}
-      <header className="flex items-center justify-center gap-3 mb-6">
-        <div className="relative">
-          <Image
-            src="/logo-og-lab.svg"
-            alt="Logo"
-            width={80}
-            height={80}
-            className="glitch-effect"
-          />
+      <header className="flex items-center justify-between mb-6 relative">
+        {/* Пустой div для баланса */}
+        <div className="w-20"></div>
+        
+        {/* Центральная часть с лого и заголовком */}
+        <div className="flex items-center justify-center gap-3">
+          <div className="relative">
+            <Image
+              src="/logo-og-lab.svg"
+              alt="Logo"
+              width={80}
+              height={80}
+              className="glitch-effect"
+            />
+          </div>
+          <h1 className="glitch-effect text-3xl font-bold tracking-wide uppercase">Menu</h1>
         </div>
-        <h1 className="glitch-effect text-3xl font-bold tracking-wide uppercase">Menu</h1>
+        
+        {/* Дата и время в правом верхнем углу */}
+        <div className="text-xs font-mono text-right" style={{ color: '#b0bf93' }}>
+          {currentTime.toLocaleDateString('en-GB', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric'
+          })} {currentTime.toLocaleTimeString('en-GB', {
+            hour: '2-digit',
+            minute: '2-digit'
+          })}
+        </div>
       </header>
 
       {/* Меню */}
@@ -111,7 +139,18 @@ const MenuPage: NextPage<MenuProps> = ({ rows, layout }) => {
         <LegendDot color={typeColor.indica} label="Dominant Indica" dataColor="indica" />
         <LegendDot color="#536C4A" label="Our farm-grown" isLeaf />
         <span className="ml-auto text-lg">Weed (with batches from 5g)</span>
-        <span className="ml-auto text-lg">Ask your budtender about a Dab Session</span>
+        <span className="ml-auto text-lg flex items-center gap-2">
+          <svg 
+            xmlns="http://www.w3.org/2000/svg" 
+            width="20" 
+            height="20" 
+            viewBox="0 0 24 24"
+            className="inline"
+          >
+            <path fill="#536C4A" d="m19.293 8.293l-2.069 2.069A7 7 0 0 0 15 8.681V4h1V2H8v2h1v4.681A7.01 7.01 0 0 0 5 15c0 3.859 3.141 7 7 7s7-3.141 7-7a7 7 0 0 0-.652-2.934l2.359-2.359zm-8.959 1.998l.666-.235V4h2v6.056l.666.235A5 5 0 0 1 16.886 14H7.114a5 5 0 0 1 3.22-3.709M12 20a5.01 5.01 0 0 1-4.898-4h9.797A5.01 5.01 0 0 1 12 20"/>
+          </svg>
+          Ask your budtender about a Dab Session
+        </span>
       </footer>
 
       {/* Анимация Пакмана */}
