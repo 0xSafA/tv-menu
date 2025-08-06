@@ -78,3 +78,17 @@ body[data-active='leaf']    [data-color='leaf'] {
     opacity: 1;
   }
 }
+
+/* Простое мигание полупрозрачного двоеточия */
+@keyframes blink-colon {
+  0%, 50% {
+    opacity: 0.7;
+  }
+  51%, 100% {
+    opacity: 0;
+  }
+}
+
+.blink-colon {
+  animation: blink-colon 2.5s linear infinite;
+}

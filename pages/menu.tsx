@@ -93,10 +93,20 @@ const MenuPage: NextPage<MenuProps> = ({ rows, layout }) => {
             day: '2-digit',
             month: '2-digit',
             year: 'numeric'
-          })} {currentTime.toLocaleTimeString('en-GB', {
-            hour: '2-digit',
-            minute: '2-digit'
-          })}
+          })} {(() => {
+            const timeString = currentTime.toLocaleTimeString('en-GB', {
+              hour: '2-digit',
+              minute: '2-digit'
+            });
+            const [hours, minutes] = timeString.split(':');
+            return (
+              <>
+                {hours}
+                <span className="blink-colon">:</span>
+                {minutes}
+              </>
+            );
+          })()}
         </div>
       </header>
 
