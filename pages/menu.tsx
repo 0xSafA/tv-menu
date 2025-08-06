@@ -63,30 +63,30 @@ const MenuPage: NextPage<MenuProps> = ({ rows, layout }) => {
   const grouped = groupRows(rows);
 
   return (
-    <main className="relative max-w-[1570px] overflow-hidden mx-auto px-2 sm:px-4 lg:px-4 z-10">
+    <main className="relative max-w-[1570px] overflow-hidden mx-auto px-4 z-10">
       <PulseController />
 
       {/* Шапка */}
-      <header className="flex flex-col sm:flex-row items-center justify-between mb-4 sm:mb-6 relative gap-4 sm:gap-0">
-        {/* Пустой div для баланса на больших экранах */}
-        <div className="hidden sm:block w-16 lg:w-20"></div>
+      <header className="flex items-center justify-between mb-6 relative">
+        {/* Пустой div для баланса */}
+        <div className="w-20"></div>
         
         {/* Центральная часть с лого и заголовком */}
-        <div className="flex items-center justify-center gap-2 sm:gap-3">
+        <div className="flex items-center justify-center gap-3">
           <div className="relative">
             <Image
               src="/logo-og-lab.svg"
               alt="Logo"
-              width={60}
-              height={60}
-              className="glitch-effect sm:w-[70px] sm:h-[70px] lg:w-[80px] lg:h-[80px]"
+              width={80}
+              height={80}
+              className="glitch-effect"
             />
           </div>
-          <h1 className="glitch-effect text-2xl sm:text-3xl font-bold tracking-wide uppercase">Menu</h1>
+          <h1 className="glitch-effect text-3xl font-bold tracking-wide uppercase">Menu</h1>
         </div>
         
-        {/* Дата и время */}
-        <div className="text-xs sm:text-xs font-mono text-center sm:text-right" style={{ color: '#536C4A' }}>
+        {/* Дата и время в правом верхнем углу */}
+        <div className="text-xs font-mono text-right" style={{ color: '#536C4A' }}>
           {currentTime.toLocaleDateString('en-GB', {
             weekday: 'long'
           })}, {currentTime.toLocaleDateString('en-GB', {
@@ -112,7 +112,7 @@ const MenuPage: NextPage<MenuProps> = ({ rows, layout }) => {
 
       {/* Меню */}
       <section>
-        <div className="glitch-effect grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-8">
+        <div className="glitch-effect grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-3 gap-8">
           {/* 1 колонка */}
           <div className="space-y-8">
             {layout.column1.map((cat) => (
@@ -128,8 +128,8 @@ const MenuPage: NextPage<MenuProps> = ({ rows, layout }) => {
           </div>
 
           {/* 3 колонка */}
-          <div className="relative sm:pl-6">
-            <span className="hidden sm:block absolute left-[-12px] top-0 h-full w-[3px] bg-[var(--color-primary-light)] z-0" />
+          <div className="relative pl-6">
+            <span className="hidden lg:block absolute left-[-12px] top-0 h-full w-[3px] bg-[var(--color-primary-light)] z-0" />
             <div className="space-y-8">
               {layout.column3.map((cat) => (
                 <CategoryBlock key={cat} name={cat} rows={grouped[cat] ?? []} />
@@ -145,13 +145,13 @@ const MenuPage: NextPage<MenuProps> = ({ rows, layout }) => {
       </div>
 
       {/* Легенда */}
-      <footer className="mt-4 w-full max-w-[1570px] text-sm sm:text-base lg:text-lg flex flex-wrap items-center gap-2 sm:gap-4 pb-4 sm:pb-6 px-2 sm:px-4 relative z-10">
+      <footer className="mt-4 w-full max-w-[1570px] text-lg flex flex-wrap items-center gap-4 pb-6 px-4 relative z-10">
         <LegendDot color={typeColor.hybrid} label="Hybrid" dataColor="hybrid" />
         <LegendDot color={typeColor.sativa} label="Dominant Sativa" dataColor="sativa" />
         <LegendDot color={typeColor.indica} label="Dominant Indica" dataColor="indica" />
         <LegendDot color="#536C4A" label="Our farm-grown" isLeaf />
-        <span className="ml-auto text-sm sm:text-base lg:text-lg">Weed (with batches from 5g)</span>
-        <span className="ml-auto text-sm sm:text-base lg:text-lg flex items-center gap-2">
+        <span className="ml-auto text-lg">Weed (with batches from 5g)</span>
+        <span className="ml-auto text-lg flex items-center gap-2">
           <svg 
             xmlns="http://www.w3.org/2000/svg" 
             width="20" 
@@ -195,23 +195,23 @@ function CategoryBlock({ name, rows }: { name: string; rows: MenuRow[] }) {
   //</div><div className="menu-section-title flex items-center bg-[#536C4A] text-white font-bold px-2 py-1 rounded-sm uppercase tracking-wide">    
   return (
     <div className="space-y-1">
-      <div className="menu-section-title flex items-center bg-[#536C4A] text-white font-bold px-2 py-1 rounded-sm uppercase tracking-wide outline-none border-none focus:outline-none focus:ring-0 text-sm sm:text-base">
+      <div className="menu-section-title flex items-center bg-[#536C4A] text-white font-bold px-2 py-1 rounded-sm uppercase tracking-wide outline-none border-none focus:outline-none focus:ring-0">
         <span className="flex-1">{name}</span>
-        {showTHC && <span className="w-12 sm:w-16 text-right text-xs sm:text-sm">THC</span>}
+        {showTHC && <span className="w-16 text-right">THC</span>}
         {priceKeys.map((k) => (
-          <span key={k} className="w-12 sm:w-16 text-right text-xs sm:text-sm">
+          <span key={k} className="w-16 text-right">
             {headerLabel(k)}
           </span>
         ))}
       </div>
 
-      <table className="w-full text-sm sm:text-base table-fixed overflow-hidden">
+      <table className="w-full text-base table-fixed">
         <tbody>
           {rows.map((r) => {
             const typeKey = getTypeKey(r);
             return (
               <tr key={r.Name} className="align-top hover:bg-[#f9f9f9] transition-colors">
-                <td className="py-0.5 pr-1 sm:pr-2 break-words max-w-[200px] sm:max-w-[260px] align-top text-xs sm:text-sm lg:text-base">
+                <td className="py-0.5 pr-2 break-words max-w-[260px] align-top">
                   {typeKey && (
                     <span
                       className="dot"
@@ -232,12 +232,12 @@ function CategoryBlock({ name, rows }: { name: string; rows: MenuRow[] }) {
                   {r.Name}
                 </td>
                 {showTHC && (
-                  <td className="py-0.5 w-12 sm:w-16 text-right text-xs sm:text-sm">
+                  <td className="py-0.5 w-16 text-right">
                     {r.THC ? `${r.THC}%` : r.CBG ? `${r.CBG}%` : '-'}
                   </td>
                 )}
                 {priceKeys.map((k) => (
-                  <td key={k} className="py-0.5 w-12 sm:w-16 text-right text-xs sm:text-sm">
+                  <td key={k} className="py-0.5 w-16 text-right">
                     {r[k] ? `${r[k]}฿` : '-'}
                   </td>
                 ))}
