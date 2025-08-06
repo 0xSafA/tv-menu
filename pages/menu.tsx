@@ -112,7 +112,7 @@ const MenuPage: NextPage<MenuProps> = ({ rows, layout }) => {
 
       {/* Меню */}
       <section>
-        <div className="glitch-effect grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
+        <div className="glitch-effect grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-8">
           {/* 1 колонка */}
           <div className="space-y-8">
             {layout.column1.map((cat) => (
@@ -128,8 +128,8 @@ const MenuPage: NextPage<MenuProps> = ({ rows, layout }) => {
           </div>
 
           {/* 3 колонка */}
-          <div className="relative md:col-span-2 lg:col-span-1 lg:pl-6">
-            <span className="hidden lg:block absolute left-[-12px] top-0 h-full w-[3px] bg-[var(--color-primary-light)] z-0" />
+          <div className="relative sm:pl-6">
+            <span className="hidden sm:block absolute left-[-12px] top-0 h-full w-[3px] bg-[var(--color-primary-light)] z-0" />
             <div className="space-y-8">
               {layout.column3.map((cat) => (
                 <CategoryBlock key={cat} name={cat} rows={grouped[cat] ?? []} />
