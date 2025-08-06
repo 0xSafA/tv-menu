@@ -28,12 +28,20 @@
   @apply inline-block w-2 h-2 rounded-full mr-1 align-middle;
 }
 
-/* ─── точки/листики дышат, когда их цвет активен ─── */
+/* ─── точки/листики/бонг дышат, когда их цвет активен ─── */
 body[data-active='hybrid']  .dot[data-color='hybrid'],
 body[data-active='sativa']  .dot[data-color='sativa'],
 body[data-active='indica']  .dot[data-color='indica'],
 body[data-active='leaf']    [data-color='leaf'] {
   @apply animate-breath;
+}
+
+body[data-active='leaf']    [data-color='leaf'].leaf {
+  @apply animate-breathLeaf;
+}
+
+body[data-active='bong']    [data-color='bong'] {
+  @apply animate-breathBong;
 }
 
 .transition-transform {
