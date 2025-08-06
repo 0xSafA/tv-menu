@@ -86,8 +86,10 @@ const MenuPage: NextPage<MenuProps> = ({ rows, layout }) => {
         </div>
         
         {/* Дата и время в правом верхнем углу */}
-        <div className="text-xs font-mono text-right" style={{ color: '#b0bf93' }}>
+        <div className="text-xs font-mono text-right" style={{ color: '#536C4A' }}>
           {currentTime.toLocaleDateString('en-GB', {
+            weekday: 'long'
+          })}, {currentTime.toLocaleDateString('en-GB', {
             day: '2-digit',
             month: '2-digit',
             year: 'numeric'

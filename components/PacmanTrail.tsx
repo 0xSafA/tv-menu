@@ -3,14 +3,24 @@ import { useEffect, useRef, useState } from 'react';
 
 export default function PacmanTrail() {
   const pacmanRef = useRef<SVGSVGElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
   const trailRef = useRef<{ x: number; y: number; id: number }[]>([]);
-  const [renderTrail, setRenderTrail] = useState<typeof trailRef.current>([]);
   const [angle, setAngle] = useState(0);
   const [position, setPosition] = useState({ x: 100, y: 100 });
 
   useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
     const w = window.innerWidth;
     const h = window.innerHeight;
+
+    // Устанавливаем размер canvas
+    canvas.width = w;
+    canvas.height = h;
 
     let x = 100;
     let y = 100;
@@ -40,6 +50,33 @@ export default function PacmanTrail() {
 
     let animationFrame: number;
     const pacmanSize = 48;
+
+    const drawTrail = () => {
+      // Очищаем canvas
+      ctx.clearRect(0, 0, w, h);
+      
+      // Рисуем след с плавным исчезновением
+      const trail = trailRef.current;
+      const trailLength = trail.length;
+      
+      ctx.fillStyle = 'white';
+      
+      trail.forEach((point, index) => {
+        // Вычисляем opacity от 0.2 (новые точки) до 0.0 (старые)
+        const age = trailLength - index;
+        const opacity = Math.max(0, 0.2 - (age / trailLength) * 0.2);
+        
+        if (opacity > 0) {
+          ctx.globalAlpha = opacity;
+          ctx.beginPath();
+          ctx.arc(point.x + 24, point.y + 24, 24, 0, Math.PI * 2); // +24 для центрирования, радиус 24px (диаметр 48px)
+          ctx.fill();
+        }
+      });
+      
+      // Восстанавливаем opacity
+      ctx.globalAlpha = 1;
+    };
 
     const animate = () => {
       const dx = target.x - x;
@@ -88,12 +125,15 @@ export default function PacmanTrail() {
       setPosition({ x, y });
       setAngle(localAngle);
 
+      // Добавляем новую точку следа
       trailRef.current.push({ x: x + offsetX, y: y + offsetY, id: lastId++ });
       if (trailRef.current.length > 370) {
         trailRef.current.shift();
       }
 
-      setRenderTrail([...trailRef.current]);
+      // Рисуем след на canvas
+      drawTrail();
+      
       animationFrame = requestAnimationFrame(animate);
     };
 
@@ -103,17 +143,17 @@ export default function PacmanTrail() {
 
   return (
     <>
-      {renderTrail.map(({ x, y, id }) => (
-        <div
-          key={id}
-          className="fixed w-[48px] h-[48px] bg-white opacity-20 rounded-full pointer-events-none transition-opacity duration-1000 z-[998]"
-          style={{
-            transform: `translate(${x}px, ${y}px)`,
-            transformOrigin: 'center center',
-          }}
-        />
-      ))}
+      {/* Canvas для рендеринга следа */}
+      <canvas
+        ref={canvasRef}
+        className="fixed inset-0 pointer-events-none z-[998]"
+        style={{
+          width: '100%',
+          height: '100%',
+        }}
+      />
 
+      {/* SVG пакман остается без изменений */}
       <svg
         ref={pacmanRef}
         className="fixed w-12 h-12 z-[1000] pointer-events-none"
