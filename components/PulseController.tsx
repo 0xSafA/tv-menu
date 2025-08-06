@@ -5,9 +5,9 @@ import { useEffect, useState } from 'react';
 /**
  * Порядок, в котором цвета «дышат».
  * Значения должны один-в-один совпадать с атрибутом
- * data-color у точек / листиков / бонга.
+ * data-color у точек / листиков.
  */
-const GROUPS = ['hybrid', 'sativa', 'indica', 'leaf', 'bong'] as const;
+const GROUPS = ['hybrid', 'sativa', 'indica', 'leaf'] as const;
 
 /** Интервал переключения, мс (20 секунд) */
 const SWITCH_MS = 20_000;

@@ -63,30 +63,30 @@ const MenuPage: NextPage<MenuProps> = ({ rows, layout }) => {
   const grouped = groupRows(rows);
 
   return (
-    <main className="relative max-w-[1570px] overflow-hidden mx-auto px-4 z-10">
+    <main className="relative max-w-[1570px] overflow-hidden mx-auto px-2 sm:px-4 lg:px-4 z-10">
       <PulseController />
 
       {/* Шапка */}
-      <header className="flex items-center justify-between mb-6 relative">
-        {/* Пустой div для баланса */}
-        <div className="w-20"></div>
+      <header className="flex flex-col sm:flex-row items-center justify-between mb-4 sm:mb-6 relative gap-4 sm:gap-0">
+        {/* Пустой div для баланса на больших экранах */}
+        <div className="hidden sm:block w-16 lg:w-20"></div>
         
         {/* Центральная часть с лого и заголовком */}
-        <div className="flex items-center justify-center gap-3">
+        <div className="flex items-center justify-center gap-2 sm:gap-3">
           <div className="relative">
             <Image
               src="/logo-og-lab.svg"
               alt="Logo"
-              width={80}
-              height={80}
-              className="glitch-effect"
+              width={60}
+              height={60}
+              className="glitch-effect sm:w-[70px] sm:h-[70px] lg:w-[80px] lg:h-[80px]"
             />
           </div>
-          <h1 className="glitch-effect text-3xl font-bold tracking-wide uppercase">Menu</h1>
+          <h1 className="glitch-effect text-2xl sm:text-3xl font-bold tracking-wide uppercase">Menu</h1>
         </div>
         
-        {/* Дата и время в правом верхнем углу */}
-        <div className="text-xs font-mono text-right" style={{ color: '#536C4A' }}>
+        {/* Дата и время */}
+        <div className="text-xs sm:text-xs font-mono text-center sm:text-right" style={{ color: '#536C4A' }}>
           {currentTime.toLocaleDateString('en-GB', {
             weekday: 'long'
           })}, {currentTime.toLocaleDateString('en-GB', {
@@ -112,7 +112,7 @@ const MenuPage: NextPage<MenuProps> = ({ rows, layout }) => {
 
       {/* Меню */}
       <section>
-        <div className="glitch-effect grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-3 gap-8">
+        <div className="glitch-effect grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
           {/* 1 колонка */}
           <div className="space-y-8">
             {layout.column1.map((cat) => (
@@ -128,7 +128,7 @@ const MenuPage: NextPage<MenuProps> = ({ rows, layout }) => {
           </div>
 
           {/* 3 колонка */}
-          <div className="relative pl-6">
+          <div className="relative md:col-span-2 lg:col-span-1 lg:pl-6">
             <span className="hidden lg:block absolute left-[-12px] top-0 h-full w-[3px] bg-[var(--color-primary-light)] z-0" />
             <div className="space-y-8">
               {layout.column3.map((cat) => (
@@ -145,20 +145,19 @@ const MenuPage: NextPage<MenuProps> = ({ rows, layout }) => {
       </div>
 
       {/* Легенда */}
-      <footer className="mt-4 w-full max-w-[1570px] text-lg flex flex-wrap items-center gap-4 pb-6 px-4 relative z-10">
+      <footer className="mt-4 w-full max-w-[1570px] text-sm sm:text-base lg:text-lg flex flex-wrap items-center gap-2 sm:gap-4 pb-4 sm:pb-6 px-2 sm:px-4 relative z-10">
         <LegendDot color={typeColor.hybrid} label="Hybrid" dataColor="hybrid" />
         <LegendDot color={typeColor.sativa} label="Dominant Sativa" dataColor="sativa" />
         <LegendDot color={typeColor.indica} label="Dominant Indica" dataColor="indica" />
         <LegendDot color="#536C4A" label="Our farm-grown" isLeaf />
-        <span className="ml-auto text-lg">Weed (with batches from 5g)</span>
-        <span className="ml-auto text-lg flex items-center gap-2">
+        <span className="ml-auto text-sm sm:text-base lg:text-lg">Weed (with batches from 5g)</span>
+        <span className="ml-auto text-sm sm:text-base lg:text-lg flex items-center gap-2">
           <svg 
             xmlns="http://www.w3.org/2000/svg" 
             width="20" 
             height="20" 
             viewBox="0 0 24 24"
             className="inline"
-            data-color="bong"
           >
             <path fill="#536C4A" d="m19.293 8.293l-2.069 2.069A7 7 0 0 0 15 8.681V4h1V2H8v2h1v4.681A7.01 7.01 0 0 0 5 15c0 3.859 3.141 7 7 7s7-3.141 7-7a7 7 0 0 0-.652-2.934l2.359-2.359zm-8.959 1.998l.666-.235V4h2v6.056l.666.235A5 5 0 0 1 16.886 14H7.114a5 5 0 0 1 3.22-3.709M12 20a5.01 5.01 0 0 1-4.898-4h9.797A5.01 5.01 0 0 1 12 20"/>
           </svg>
@@ -196,26 +195,26 @@ function CategoryBlock({ name, rows }: { name: string; rows: MenuRow[] }) {
   //</div><div className="menu-section-title flex items-center bg-[#536C4A] text-white font-bold px-2 py-1 rounded-sm uppercase tracking-wide">    
   return (
     <div className="space-y-1">
-      <div className="menu-section-title flex items-center bg-[#536C4A] text-white font-bold px-2 py-1 rounded-sm uppercase tracking-wide outline-none border-none focus:outline-none focus:ring-0">
+      <div className="menu-section-title flex items-center bg-[#536C4A] text-white font-bold px-2 py-1 rounded-sm uppercase tracking-wide outline-none border-none focus:outline-none focus:ring-0 text-sm sm:text-base">
         <span className="flex-1">{name}</span>
-        {showTHC && <span className="w-16 text-right">THC</span>}
+        {showTHC && <span className="w-12 sm:w-16 text-right text-xs sm:text-sm">THC</span>}
         {priceKeys.map((k) => (
-          <span key={k} className="w-16 text-right">
+          <span key={k} className="w-12 sm:w-16 text-right text-xs sm:text-sm">
             {headerLabel(k)}
           </span>
         ))}
       </div>
 
-      <table className="w-full text-base table-fixed">
+      <table className="w-full text-sm sm:text-base table-fixed overflow-hidden">
         <tbody>
           {rows.map((r) => {
             const typeKey = getTypeKey(r);
             return (
               <tr key={r.Name} className="align-top hover:bg-[#f9f9f9] transition-colors">
-                <td className="py-0.5 pr-2 break-words max-w-[260px] align-top">
+                <td className="py-0.5 pr-1 sm:pr-2 break-words max-w-[200px] sm:max-w-[260px] align-top text-xs sm:text-sm lg:text-base">
                   {typeKey && (
                     <span
-                      className="dot animate-breath"
+                      className="dot"
                       data-color={typeKey}
                       style={{ backgroundColor: typeColor[typeKey] }}
                     />
@@ -226,19 +225,19 @@ function CategoryBlock({ name, rows }: { name: string; rows: MenuRow[] }) {
                       alt="Our farm-grown leaf icon"
                       width={12}
                       height={12}
-                      className="leaf inline mr-[2px] align-middle animate-breathLeaf"
+                      className="leaf inline mr-[2px] align-middle"
                       data-color="leaf"
                     />
                   )}
                   {r.Name}
                 </td>
                 {showTHC && (
-                  <td className="py-0.5 w-16 text-right">
+                  <td className="py-0.5 w-12 sm:w-16 text-right text-xs sm:text-sm">
                     {r.THC ? `${r.THC}%` : r.CBG ? `${r.CBG}%` : '-'}
                   </td>
                 )}
                 {priceKeys.map((k) => (
-                  <td key={k} className="py-0.5 w-16 text-right">
+                  <td key={k} className="py-0.5 w-12 sm:w-16 text-right text-xs sm:text-sm">
                     {r[k] ? `${r[k]}฿` : '-'}
                   </td>
                 ))}
